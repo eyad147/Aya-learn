@@ -11,24 +11,24 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
       <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
     </div>
     <nav class="sidebar-nav">
       <a href="#" class="nav-item active" data-tab="overview" data-i18n="nav.overview"><i class="fas fa-home"></i> Overview</a>
       <a href="teachers.html" class="nav-item" data-i18n="nav.browse_teachers"><i class="fas fa-search"></i> Browse Teachers</a>
       <a href="sessions.html" class="nav-item" data-i18n="nav.sessions"><i class="fas fa-calendar"></i> My Sessions</a>
-      <a href="#" class="nav-item" data-tab="progress"><i class="fas fa-chart-line"></i> My Progress</a>
+      <a href="#" class="nav-item" data-tab="progress" data-i18n="nav.my_progress"><i class="fas fa-chart-line"></i> My Progress</a>
       <a href="#" class="nav-item" data-tab="scores" data-i18n="nav.scores"><i class="fas fa-star"></i> My Scores</a>
-      <a href="#" class="nav-item" data-tab="portions"><i class="fas fa-book"></i> Assigned Portions</a>
+      <a href="#" class="nav-item" data-tab="portions" data-i18n="nav.assigned_portions"><i class="fas fa-book"></i> Assigned Portions</a>
       <a href="#" class="nav-item" data-tab="settings" data-i18n="nav.settings"><i class="fas fa-cog"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-info">
         <div class="user-avatar">S</div>
         <div class="user-details">
-          <span class="user-name">Student</span>
-          <span class="user-role">Student</span>
+          <span class="user-name"></span>
+          <span class="user-role"></span>
         </div>
       </div>
       <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
@@ -47,10 +47,10 @@
     <div class="user-dropdown-wrapper">
       <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">S</div>
       <div class="user-dropdown-menu" id="userDropdownMenu">
-        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
-        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> <span data-i18n="common.profile">Profile</span></a>
+        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> <span data-i18n="common.settings">Settings</span></a>
         <div class="dropdown-divider"></div>
-        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Log Out</span></button>
       </div>
     </div>
       </div>
@@ -78,7 +78,7 @@
       </div>
       <div class="content-grid">
         <div class="card">
-          <div class="card-header"><h3>Overall Progress</h3></div>
+          <div class="card-header"><h3 data-i18n="student.overall_progress">Overall Progress</h3></div>
           <div class="card-body">
             <div class="progress-ring-container">
               <div class="progress-ring">
@@ -88,28 +88,28 @@
                 </svg>
                 <div class="ring-text">
                   <span class="ring-percent">0%</span>
-                  <span class="ring-label">Complete</span>
+                  <span class="ring-label" data-i18n="student.complete_label">Complete</span>
                 </div>
               </div>
               <div class="progress-details">
                 <div class="progress-detail">
-                  <span class="detail-label">Juz Memorized</span>
+                  <span class="detail-label" data-i18n="student.juz_memorized_label">Juz Memorized</span>
                   <span class="detail-value">0 / 30</span>
                 </div>
                 <div class="progress-detail">
-                  <span class="detail-label">In Progress</span>
+                  <span class="detail-label" data-i18n="student.in_progress_label">In Progress</span>
                   <span class="detail-value">None</span>
                 </div>
                 <div class="progress-detail">
-                  <span class="detail-label">Progress</span>
-                  <span class="detail-value">Click Juz to update</span>
+                  <span class="detail-label" data-i18n="student.progress_status">Progress</span>
+                  <span class="detail-value" data-i18n="student.click_to_update">Click Juz to update</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>Recent Scores</h3></div>
+          <div class="card-header"><h3 data-i18n="student.recent_scores">Recent Scores</h3></div>
           <div class="card-body"><div class="activity-list"></div></div>
         </div>
       </div>
@@ -118,7 +118,7 @@
     <!-- Tab: Progress -->
     <section class="tab-content" id="tab-progress">
       <div class="card">
-        <div class="card-header"><h3>Juz Progress</h3></div>
+        <div class="card-header"><h3 data-i18n="student.juz_progress">Juz Progress</h3></div>
         <div class="card-body">
           <div class="juz-grid" id="juzGrid"></div>
         </div>
@@ -132,17 +132,17 @@
           <h3 data-i18n="student.scores">Score History</h3>
           <div class="card-actions">
             <select id="scoreFilter" class="filter-select">
-              <option value="all">All Scores</option>
-              <option value="tajweed">Tajweed</option>
-              <option value="memorization">Memorization</option>
-              <option value="fluency">Fluency</option>
+              <option value="all" data-i18n="student.filter_all">All Scores</option>
+              <option value="tajweed" data-i18n="score.tajweed">Tajweed</option>
+              <option value="memorization" data-i18n="score.memorization">Memorization</option>
+              <option value="fluency" data-i18n="score.fluency">Fluency</option>
             </select>
           </div>
         </div>
         <div class="card-body">
           <table class="data-table" id="scoresTable">
             <thead>
-              <tr><th>Date</th><th>Portion</th><th>Tajweed</th><th>Memorization</th><th>Fluency</th><th>Overall</th></tr>
+              <tr><th data-i18n="score.date">Date</th><th data-i18n="score.portion">Portion</th><th data-i18n="score.tajweed">Tajweed</th><th data-i18n="score.memorization">Memorization</th><th data-i18n="score.fluency">Fluency</th><th data-i18n="score.overall">Overall</th></tr>
             </thead>
             <tbody></tbody>
           </table>

@@ -12,7 +12,7 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-header">
-        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
         <h2 data-i18n="signup.title">Create Account</h2>
         <p data-i18n="signup.subtitle">Start your Quran learning journey</p>
       </div>
@@ -38,7 +38,7 @@
           <label for="signupPassword" data-i18n="login.password">Password</label>
           <div class="input-wrapper">
             <i class="fas fa-lock"></i>
-            <input type="password" id="signupPassword" placeholder="Create a password" required>
+            <input type="password" id="signupPassword" data-i18n-placeholder="signup.create_password" placeholder="Create a password" required>
             <button type="button" class="toggle-password" onclick="togglePassword('signupPassword', this)">
               <i class="fas fa-eye"></i>
             </button>
@@ -50,7 +50,7 @@
           <div class="input-wrapper">
             <i class="fas fa-id-badge"></i>
             <select id="signupRole" required>
-              <option value="" disabled selected data-i18n="signup.role">Select your role</option>
+              <option value="" disabled selected data-i18n="signup.select_role">Select your role</option>
               <option value="student" data-i18n="signup.role_student">Student</option>
               <option value="teacher" data-i18n="signup.role_teacher">Teacher</option>
             </select>
@@ -58,7 +58,7 @@
         </div>
 
         <label class="checkbox-label">
-          <input type="checkbox" required> I agree to the <a href="#">Terms of Service</a>
+          <input type="checkbox" required> <span data-i18n="signup.agree_terms">I agree to the Terms of Service</span>
         </label>
 
         <button type="submit" class="btn btn-primary btn-block" data-i18n="signup.submit">Sign Up</button>
@@ -101,7 +101,7 @@
       }
       const err = params.get('error');
       if (err === 'google_auth_failed') {
-        alert('Google sign-in failed. Please try again.');
+        alert(t('auth.google_failed'));
       }
     })();
   </script>

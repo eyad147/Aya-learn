@@ -8,8 +8,8 @@ async function loadNotifications() {
       if (unread.count > 0) { badge.textContent = unread.count; badge.style.display = 'flex'; }
       else { badge.style.display = 'none'; }
     }
-    dropdown.innerHTML = '<div class="notif-header"><strong>Notifications</strong><button class="btn btn-sm btn-outline" id="markAllRead">Mark all read</button></div>';
-    if (!notifs.length) { dropdown.innerHTML += '<p style="padding:16px;text-align:center;color:var(--text-lighter)">No notifications</p>'; return; }
+    dropdown.innerHTML = '<div class="notif-header"><strong>'+t('notif.title')+'</strong><button class="btn btn-sm btn-outline" id="markAllRead">'+t('notif.mark_read')+'</button></div>';
+    if (!notifs.length) { dropdown.innerHTML += '<p style="padding:16px;text-align:center;color:var(--text-lighter)">'+t('notif.empty')+'</p>'; return; }
     notifs.slice(0, 10).forEach(n => {
       const icon = { session_request: 'fa-calendar-plus', session_accepted: 'fa-check-circle', session_rejected: 'fa-times-circle', meet_link: 'fa-video', session_completed: 'fa-flag-checkered', session_cancelled: 'fa-ban', review: 'fa-star' }[n.type] || 'fa-bell';
       dropdown.innerHTML += `

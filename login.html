@@ -12,7 +12,7 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-header">
-        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
         <h2 data-i18n="login.title">Welcome Back</h2>
         <p data-i18n="login.subtitle">Log in to your account</p>
       </div>
@@ -85,7 +85,7 @@
       }
       const err = params.get('error');
       if (err === 'google_auth_failed') {
-        alert('Google sign-in failed. Please try again.');
+        alert(t('auth.google_failed'));
       }
     })();
   </script>

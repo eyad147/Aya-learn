@@ -18,13 +18,13 @@
       </a>
       <ul class="nav-links">
         <li><a href="#home" data-i18n="nav.overview">Home</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#features" data-i18n="common.features">Features</a></li>
+        <li><a href="#about" data-i18n="common.about">About</a></li>
+        <li><a href="#contact" data-i18n="common.contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="login.html" class="btn btn-outline">Log In</a>
-        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        <a href="login.html" class="btn btn-outline" data-i18n="common.log_in">Log In</a>
+        <a href="signup.html" class="btn btn-primary" data-i18n="common.sign_up">Sign Up</a>
       </div>
       <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
@@ -36,42 +36,38 @@
   <section class="hero" id="home">
     <div class="container hero-content">
       <h1 data-i18n="app.tagline">Memorize the <span class="highlight">Quran</span> with Guidance</h1>
-      <p data-i18n="app.tagline">Aya Learn connects teachers and students for structured Quran memorization. Track progress, score recitations, and grow together.</p>
+      <p data-i18n="landing.hero_subtitle">Aya Learn connects teachers and students for structured Quran memorization. Track progress, score recitations, and grow together.</p>
       <div class="hero-buttons">
-        <a href="signup.html" class="btn btn-primary btn-lg">Get Started</a>
-        <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+        <a href="signup.html" class="btn btn-primary btn-lg" data-i18n="landing.get_started">Get Started</a>
+        <a href="#features" class="btn btn-outline btn-lg" data-i18n="landing.learn_more">Learn More</a>
       </div>
-    </div>
-    <div class="hero-decoration">
-      <div class="circle circle-1"></div>
-      <div class="circle circle-2"></div>
     </div>
   </section>
 
   <!-- Features -->
   <section class="features" id="features">
     <div class="container">
-      <h2 class="section-title">Why Aya Learn?</h2>
+      <h2 class="section-title" data-i18n="landing.features_title">Why Aya Learn?</h2>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-          <h3>For Teachers</h3>
-          <p>Create classes, assign portions, and score student recitations with detailed feedback.</p>
+          <h3 data-i18n="landing.feature_teacher">For Teachers</h3>
+          <p data-i18n="landing.feature_teacher_desc">Create classes, assign portions, and score student recitations with detailed feedback.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-user-graduate"></i></div>
-          <h3>For Students</h3>
-          <p>Track your memorization progress, review portions, and monitor your scores over time.</p>
+          <h3 data-i18n="landing.feature_student">For Students</h3>
+          <p data-i18n="landing.feature_student_desc">Track your memorization progress, review portions, and monitor your scores over time.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-          <h3>Progress Tracking</h3>
-          <p>Visual dashboards show memorization progress with charts and detailed statistics.</p>
+          <h3 data-i18n="landing.feature_progress">Progress Tracking</h3>
+          <p data-i18n="landing.feature_progress_desc">Visual dashboards show memorization progress with charts and detailed statistics.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
-          <h3>Admin Control</h3>
-          <p>Full administrative panel to manage users, classes, and platform settings.</p>
+          <h3 data-i18n="landing.feature_admin">Admin Control</h3>
+          <p data-i18n="landing.feature_admin_desc">Full administrative panel to manage users, classes, and platform settings.</p>
         </div>
       </div>
     </div>
@@ -81,19 +77,19 @@
   <section class="about" id="about">
     <div class="container about-content">
       <div class="about-text">
-        <h2 class="section-title">Our Mission</h2>
-        <p>Aya Learn aims to make Quran memorization accessible and organized. Whether you are a teacher managing multiple students or a student on your memorization journey, our platform provides the tools you need.</p>
+        <h2 class="section-title" data-i18n="landing.about_mission">Our Mission</h2>
+        <p data-i18n="landing.about_paragraph">Aya Learn aims to make Quran memorization accessible and organized. Whether you are a teacher managing multiple students or a student on your memorization journey, our platform provides the tools you need.</p>
         <ul class="about-list">
-          <li><i class="fas fa-check"></i> Easy class management</li>
-          <li><i class="fas fa-check"></i> Detailed scoring system</li>
-          <li><i class="fas fa-check"></i> Progress visualization</li>
-          <li><i class="fas fa-check"></i> Role-based dashboards</li>
+          <li><i class="fas fa-check"></i> <span data-i18n="landing.about_easy">Easy class management</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="landing.about_scoring">Detailed scoring system</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="landing.about_progress">Progress visualization</span></li>
+          <li><i class="fas fa-check"></i> <span data-i18n="landing.about_dashboards">Role-based dashboards</span></li>
         </ul>
       </div>
       <div class="about-visual">
         <div class="visual-card">
           <i class="fas fa-mosque"></i>
-          <p>Building a generation of Hafiz</p>
+          <p data-i18n="landing.about_hafiz">Building a generation of Hafiz</p>
         </div>
       </div>
     </div>
@@ -102,14 +98,14 @@
   <!-- Contact -->
   <section class="contact" id="contact">
     <div class="container">
-      <h2 class="section-title">Get In Touch</h2>
+      <h2 class="section-title" data-i18n="landing.contact_title">Get In Touch</h2>
       <form class="contact-form" id="contactForm">
         <div class="form-row">
-          <input type="text" placeholder="Your Name" required>
-          <input type="email" placeholder="Your Email" required>
+          <input type="text" data-i18n-placeholder="landing.contact_name" placeholder="Your Name" required>
+          <input type="email" data-i18n-placeholder="landing.contact_email" placeholder="Your Email" required>
         </div>
-        <textarea rows="5" placeholder="Your Message" required></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <textarea rows="5" data-i18n-placeholder="landing.contact_message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary" data-i18n="landing.contact_send">Send Message</button>
       </form>
     </div>
   </section>
@@ -118,16 +114,16 @@
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
-        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
-        <p>Quran Memorization Platform</p>
+        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
+        <p data-i18n="footer.description">Quran Memorization Platform</p>
       </div>
       <div class="footer-links">
-        <a href="login.html">Log In</a>
-        <a href="signup.html">Sign Up</a>
-        <a href="#features">Features</a>
-        <a href="#contact">Contact</a>
+        <a href="login.html" data-i18n="common.log_in">Log In</a>
+        <a href="signup.html" data-i18n="common.sign_up">Sign Up</a>
+        <a href="#features" data-i18n="common.features">Features</a>
+        <a href="#contact" data-i18n="common.contact">Contact</a>
       </div>
-      <div class="footer-copy">&copy; 2026 Aya Learn. All rights reserved.</div>
+      <div class="footer-copy" data-i18n="footer.copyright">&copy; 2026 Aya Learn. All rights reserved.</div>
     </div>
   </footer>
 

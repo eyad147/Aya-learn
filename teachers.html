@@ -11,7 +11,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
       <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
     </div>
     <nav class="sidebar-nav" id="sidebarNav">
@@ -23,8 +23,8 @@
       <div class="user-info">
         <div class="user-avatar">S</div>
         <div class="user-details">
-          <span class="user-name">Student</span>
-          <span class="user-role">Student</span>
+          <span class="user-name"></span>
+          <span class="user-role"></span>
         </div>
       </div>
       <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
@@ -43,10 +43,10 @@
         <div class="user-dropdown-wrapper">
           <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">U</div>
           <div class="user-dropdown-menu" id="userDropdownMenu">
-            <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
-            <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> <span data-i18n="common.profile">Profile</span></a>
+            <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> <span data-i18n="common.settings">Settings</span></a>
             <div class="dropdown-divider"></div>
-            <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Log Out</span></button>
           </div>
         </div>
       </div>
@@ -56,16 +56,16 @@
       <div class="filter-bar" style="margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
         <select id="specFilter" class="filter-select">
           <option value="" data-i18n="filter.all_specs">All Specializations</option>
-          <option value="Tajweed">Tajweed</option>
-          <option value="Hifz">Hifz</option>
-          <option value="Qiraat">Qiraat</option>
-          <option value="Beginners">Beginners</option>
+          <option value="Tajweed" data-i18n="teacher.spec_tajweed">Tajweed</option>
+          <option value="Hifz" data-i18n="teacher.spec_hifz">Hifz</option>
+          <option value="Qiraat" data-i18n="teacher.spec_qiraat">Qiraat</option>
+          <option value="Beginners" data-i18n="teacher.spec_beginners">Beginners</option>
         </select>
         <select id="priceFilter" class="filter-select">
           <option value="" data-i18n="filter.all_prices">Any Price</option>
-          <option value="10">Under $10</option>
-          <option value="20">Under $20</option>
-          <option value="50">Under $50</option>
+          <option value="10">$10</option>
+          <option value="20">$20</option>
+          <option value="50">$50</option>
         </select>
         <div class="search-box">
           <i class="fas fa-search"></i>
@@ -73,9 +73,7 @@
         </div>
       </div>
 
-      <div class="teachers-grid" id="teachersGrid">
-        <!-- Populated by JS -->
-      </div>
+      <div class="teachers-grid" id="teachersGrid"></div>
     </div>
   </main>
 
@@ -86,9 +84,7 @@
         <h3 id="teacherModalName">Teacher</h3>
         <button class="modal-close" onclick="document.getElementById('teacherModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
-      <div class="modal-body" id="teacherModalBody">
-        <!-- Populated by JS -->
-      </div>
+      <div class="modal-body" id="teacherModalBody"></div>
     </div>
   </div>
 
@@ -96,31 +92,31 @@
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Book Session</h3>
+        <h3 data-i18n="booking.confirm_booking">Book Session</h3>
         <button class="modal-close" onclick="document.getElementById('bookingModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="bookingForm">
           <input type="hidden" id="bookingTeacherId">
-          <p style="margin-bottom:16px;color:var(--text-light)">Booking with: <strong id="bookingTeacherName"></strong></p>
-          <p style="margin-bottom:16px;color:var(--text-light)">Price: <strong id="bookingPrice"></strong></p>
+          <p style="margin-bottom:16px;color:var(--text-light)" data-i18n="sessions.book_with">Booking with: <strong id="bookingTeacherName"></strong></p>
+          <p style="margin-bottom:16px;color:var(--text-light)" data-i18n="sessions.price">Price: <strong id="bookingPrice"></strong></p>
           <div class="form-group">
-            <label>Date & Time</label>
+            <label data-i18n="sessions.date_time">Date & Time</label>
             <input type="datetime-local" id="bookingDate" required>
           </div>
           <div class="form-group">
-            <label>Duration (minutes)</label>
+            <label data-i18n="sessions.duration">Duration (minutes)</label>
             <select id="bookingDuration">
-              <option value="30">30 minutes</option>
-              <option value="60">60 minutes</option>
-              <option value="90">90 minutes</option>
+              <option value="30" data-i18n="sessions.duration_30">30 minutes</option>
+              <option value="60" data-i18n="sessions.duration_60">60 minutes</option>
+              <option value="90" data-i18n="sessions.duration_90">90 minutes</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Notes (optional)</label>
-            <textarea id="bookingNotes" rows="3" placeholder="What would you like to focus on?"></textarea>
+            <label data-i18n="booking.notes_optional">Notes (optional)</label>
+            <textarea id="bookingNotes" rows="3" data-i18n-placeholder="booking.notes_placeholder" placeholder="What would you like to focus on?"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Confirm Booking</button>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="booking.confirm_booking">Confirm Booking</button>
         </form>
       </div>
     </div>

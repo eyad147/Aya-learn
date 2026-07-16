@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const avg = ss.length ? Math.round(ss.reduce((a,x) => a+x.overall,0)/ss.length) : 0;
         let cn = 'N/A'; for (const c of classes) { if (cd[c.id]?.students?.find(x => x.id===s.id)) { cn=c.name; break; } }
         const sb = avg>=85?'badge-green':avg>=60?'badge-yellow':'badge-red';
-        tbody.innerHTML += `<tr><td><div class="user-cell"><div class="user-avatar-sm">${s.name[0]}</div> ${s.name}</div></td><td>${cn}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${avg}%"></div></div><span>${avg}%</span></td><td>${avg}%</td><td><span class="badge ${sb}">${avg>=85?'Good':avg>=60?'Average':'Needs Work'}</span></td></tr>`;
+        tbody.innerHTML += `<tr><td><div class="user-cell"><div class="user-avatar-sm">${s.name[0]}</div> ${s.name}</div></td><td>${cn}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${avg}%"></div></div><span>${avg}%</span></td><td>${avg}%</td><td><span class="badge ${sb}">${avg>=85?t('student.good'):avg>=60?t('student.average'):t('student.needs_work')}</span></td></tr>`;
       });
     } catch(e) { console.error(e); }
   }
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const classes = await api('/classes'); grid.innerHTML = '';
       const colors = ['blue','green','yellow','purple'];
       classes.forEach((c,i) => {
-        grid.innerHTML += `<div class="class-card"><div class="class-header ${colors[i%colors.length]}"><i class="fas fa-book-open"></i><h4>${c.name}</h4></div><div class="class-body"><p><i class="fas fa-users"></i> ${c.student_count||0} Students</p><p><i class="fas fa-calendar"></i> ${c.schedule||'Not set'}</p><p><i class="fas fa-clock"></i> ${c.time||'Not set'}</p></div><div class="class-footer" style="display:flex;gap:8px;align-items:center"><span class="badge badge-green">${c.status}</span><button class="btn btn-sm btn-outline" onclick="editClass(${c.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteClass(${c.id})"><i class="fas fa-trash"></i></button><button class="btn btn-sm btn-outline" onclick="showEnrollModal(${c.id},'${c.name.replace(/'/g,"\\'")}')"><i class="fas fa-user-plus"></i></button></div></div>`;
+        grid.innerHTML += `<div class="class-card"><div class="class-header ${colors[i%colors.length]}"><i class="fas fa-book-open"></i><h4>${c.name}</h4></div><div class="class-body"><p><i class="fas fa-users"></i> ${c.student_count||0} ${t('common.students_label')}</p><p><i class="fas fa-calendar"></i> ${c.schedule||t('common.not_set')}</p><p><i class="fas fa-clock"></i> ${c.time||t('common.not_set')}</p></div><div class="class-footer" style="display:flex;gap:8px;align-items:center"><span class="badge badge-green">${c.status}</span><button class="btn btn-sm btn-outline" onclick="editClass(${c.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteClass(${c.id})"><i class="fas fa-trash"></i></button><button class="btn btn-sm btn-outline" onclick="showEnrollModal(${c.id},'${c.name.replace(/'/g,"\\'")}')"><i class="fas fa-user-plus"></i></button></div></div>`;
       });
     } catch(e) { console.error(e); }
   }
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const al = document.querySelector('#tab-overview .activity-list');
     if (al) { try { const s = await api('/progress/stats/overview'); al.innerHTML=''; if(s.recent_scores?.length) s.recent_scores.forEach(x => al.innerHTML+=`<div class="activity-item"><div class="activity-dot green"></div><div><p><strong>${x.student_name}</strong> scored ${x.overall}% on ${x.portion}</p><span class="activity-time">${timeAgo(x.created_at)}</span></div></div>`); else al.innerHTML='<p style="color:var(--text-lighter)">'+t('dashboard.no_activity')+'</p>'; } catch(e){} }
     const ul = document.querySelector('#tab-overview .upcoming-list');
-    if (ul) { try { const cls = await api('/classes'); ul.innerHTML=''; cls.forEach(c => { if(c.schedule) ul.innerHTML+=`<div class="upcoming-item"><i class="fas fa-calendar"></i><div><p>${c.name}</p><span>${c.schedule}${c.time?', '+c.time:''}</span></div></div>`; }); if(!ul.innerHTML) ul.innerHTML='<p style="color:var(--text-lighter)">No upcoming.</p>'; } catch(e){} }
+    if (ul) { try { const cls = await api('/classes'); ul.innerHTML=''; cls.forEach(c => { if(c.schedule) ul.innerHTML+=`<div class="upcoming-item"><i class="fas fa-calendar"></i><div><p>${c.name}</p><span>${c.schedule}${c.time?', '+c.time:''}</span></div></div>`; }); if(!ul.innerHTML) ul.innerHTML='<p style="color:var(--text-lighter)">'+t('common.no_upcoming')+'</p>'; } catch(e){} }
   }
   loadTeacherOverview();
 
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const slots = await api('/availability/my');
       list.innerHTML = '';
-      if (!slots.length) { list.innerHTML = '<p style="color:var(--text-lighter);text-align:center;padding:16px">No slots added yet.</p>'; return; }
+      if (!slots.length) { list.innerHTML = '<p style="color:var(--text-lighter);text-align:center;padding:16px">'+t('teacher.no_slots')+'</p>'; return; }
       const days = [t('avail.sunday'),t('avail.monday'),t('avail.tuesday'),t('avail.wednesday'),t('avail.thursday'),t('avail.friday'),t('avail.saturday')];
       slots.forEach(s => {
         list.innerHTML += `<div class="session-card" style="margin-bottom:8px"><div class="session-info"><h4>${days[s.day_of_week]}</h4><p><i class="fas fa-clock"></i> ${s.start_time} - ${s.end_time}</p></div><div class="session-actions"><button class="btn btn-sm btn-danger" onclick="deleteAvailSlot(${s.id})">${t('sessions.remove')}</button></div></div>`;
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = getUser(); if (!user || user.role!=='student') return;
     const grid = document.querySelector('#tab-overview .stats-grid');
     if (grid) { try { const s = await api('/scores/stats/'+user.id); const c = grid.querySelectorAll('.stat-info h3'); if(c[0])c[0].textContent=s.juz_memorized||0; if(c[1])c[1].textContent=(s.averages?.avg_overall||0)+'%'; if(c[2])c[2].textContent=s.active_days||0; if(c[3])c[3].textContent=s.total_scores||0; } catch(e){} }
-    try { const p = await api('/progress/'+user.id); const mem=p.filter(x=>x.status==='memorized').length; const inp=p.filter(x=>x.status==='in_progress'); const pct=Math.round((mem/30)*100); const circ=2*Math.PI*54; const off=circ-(pct/100)*circ; const rp=document.querySelector('.ring-percent'); const rf=document.querySelector('.ring-fill'); if(rp)rp.textContent=pct+'%'; if(rf)rf.style.strokeDashoffset=off; const dv=document.querySelectorAll('.detail-value'); if(dv[0])dv[0].textContent=mem+' / 30'; if(dv[1])dv[1].textContent=inp.length?'Juz '+inp.map(x=>x.juz_number).join(', '):'None'; } catch(e){}
+    try { const p = await api('/progress/'+user.id); const mem=p.filter(x=>x.status==='memorized').length; const inp=p.filter(x=>x.status==='in_progress'); const pct=Math.round((mem/30)*100); const circ=2*Math.PI*54; const off=circ-(pct/100)*circ; const rp=document.querySelector('.ring-percent'); const rf=document.querySelector('.ring-fill'); if(rp)rp.textContent=pct+'%'; if(rf)rf.style.strokeDashoffset=off; const dv=document.querySelectorAll('.detail-value'); if(dv[0])dv[0].textContent=mem+' / 30'; if(dv[1])dv[1].textContent=inp.length?'Juz '+inp.map(x=>x.juz_number).join(', '):t('student.none'); } catch(e){}
     const rl = document.querySelector('#tab-overview .activity-list');
     if (rl) { try { const sc = await api('/scores'); rl.innerHTML=''; sc.slice(0,5).forEach(s => rl.innerHTML+=`<div class="activity-item"><div class="activity-dot ${s.overall>=85?'green':s.overall>=60?'blue':'yellow'}"></div><div><p><strong>${s.portion}</strong> - ${s.overall}% (${s.comments||t('common.no_comments')})</p><span class="activity-time">${timeAgo(s.created_at)}</span></div></div>`); if(!sc.length)rl.innerHTML='<p style="color:var(--text-lighter)">'+t('student.no_scores')+'</p>'; } catch(e){} }
   }
@@ -270,13 +270,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadAdminUsers() {
     const t=document.getElementById('usersTable'); if(!t)return;
-    try{const u=await api('/users');const tb=t.querySelector('tbody');tb.innerHTML='';u.forEach(x=>{const rb=x.role==='teacher'?'badge-blue':'badge-purple';const st=x.status&&x.status!=='active'?`<span class="badge badge-yellow">${x.status}</span>`:'<span class="badge badge-green">Active</span>';tb.innerHTML+=`<tr><td><div class="user-cell"><div class="user-avatar-sm">${x.name[0]}</div> ${x.name}</div></td><td><span class="badge ${rb}">${x.role}</span></td><td>${x.email}</td><td>${formatDate(x.created_at)}</td><td>${st}</td><td><button class="btn btn-sm btn-outline" onclick="showEditUserModal(${x.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteUser(${x.id})"><i class="fas fa-trash"></i></button></td></tr>`;});}catch(e){console.error(e);}
+    try{const u=await api('/users');const tb=t.querySelector('tbody');tb.innerHTML='';u.forEach(x=>{const rb=x.role==='teacher'?'badge-blue':'badge-purple';const st=x.status&&x.status!=='active'?`<span class="badge badge-yellow">${x.status}</span>`:'<span class="badge badge-green">'+t('users.active')+'</span>';tb.innerHTML+=`<tr><td><div class="user-cell"><div class="user-avatar-sm">${x.name[0]}</div> ${x.name}</div></td><td><span class="badge ${rb}">${x.role}</span></td><td>${x.email}</td><td>${formatDate(x.created_at)}</td><td>${st}</td><td><button class="btn btn-sm btn-outline" onclick="showEditUserModal(${x.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteUser(${x.id})"><i class="fas fa-trash"></i></button></td></tr>`;});}catch(e){console.error(e);}
   }
   loadAdminUsers();
 
   async function loadPendingTeachers() {
     const t=document.getElementById('pendingTeachersList'); if(!t)return;
-    try{const u=await api('/auth/pending-teachers');t.innerHTML='';if(!u.length){t.innerHTML='<p style="text-align:center;color:var(--text-lighter);padding:32px">No pending teacher registrations.</p>';return;}u.forEach(x=>{t.innerHTML+=`<div class="session-card"><div class="session-info"><h4>${x.name}</h4><p><i class="fas fa-envelope"></i> ${x.email}</p>${x.phone?`<p><i class="fas fa-phone"></i> ${x.phone}</p>`:''}${x.bio?`<p><i class="fas fa-info-circle"></i> ${x.bio}</p>`:''}<p><i class="fas fa-calendar"></i> Registered ${formatDate(x.created_at)}</p></div><div class="session-actions"><button class="btn btn-sm btn-primary" onclick="approveTeacher(${x.id})">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTeacher(${x.id})">Reject</button></div></div>`;});}catch(e){console.error(e);}
+    try{const u=await api('/auth/pending-teachers');t.innerHTML='';if(!u.length){t.innerHTML='<p style="text-align:center;color:var(--text-lighter);padding:32px">'+t('teacher.no_pending')+'</p>';return;}u.forEach(x=>{t.innerHTML+=`<div class="session-card"><div class="session-info"><h4>${x.name}</h4><p><i class="fas fa-envelope"></i> ${x.email}</p>${x.phone?`<p><i class="fas fa-phone"></i> ${x.phone}</p>`:''}${x.bio?`<p><i class="fas fa-info-circle"></i> ${x.bio}</p>`:''}<p><i class="fas fa-calendar"></i> Registered ${formatDate(x.created_at)}</p></div><div class="session-actions"><button class="btn btn-sm btn-primary" onclick="approveTeacher(${x.id})">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTeacher(${x.id})">Reject</button></div></div>`;});}catch(e){console.error(e);}
   }
   loadPendingTeachers();
 
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const teachers = await api(url);
         teachersGrid.innerHTML = '';
-        if (!teachers.length) { teachersGrid.innerHTML = '<p style="text-align:center;color:var(--text-lighter);padding:48px">No teachers found.</p>'; return; }
+        if (!teachers.length) { teachersGrid.innerHTML = '<p style="text-align:center;color:var(--text-lighter);padding:48px">'+t('teacher.no_teachers')+'</p>'; return; }
         teachers.forEach(t => {
           teachersGrid.innerHTML += `
             <div class="teacher-card" onclick="showTeacherProfile(${t.id})">
@@ -595,15 +595,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="session-info">
                   <h4>${isTeacher ? s.student_name : s.teacher_name}</h4>
                   <p><i class="fas fa-calendar"></i> ${formatDateTime(s.scheduled_at)}</p>
-                  ${s.meet_link ? `<p><a href="${s.meet_link}" target="_blank"><i class="fas fa-video"></i> Meeting link</a></p>` : ''}
+                  ${s.meet_link ? `<p><a href="${s.meet_link}" target="_blank"><i class="fas fa-video"></i> ${t('sessions.meeting_link')}</a></p>` : ''}
                   ${hasScore ? `
                     <div class="score-display" style="margin-top:10px;padding:10px;background:var(--bg-secondary);border-radius:8px">
                       <p><strong>${s.score_portion}</strong></p>
                       <div style="display:flex;gap:16px;margin-top:6px;flex-wrap:wrap">
-                        <span><strong>Tajweed:</strong> ${s.score_tajweed}%</span>
-                        <span><strong>Memorization:</strong> ${s.score_memorization}%</span>
-                        <span><strong>Fluency:</strong> ${s.score_fluency}%</span>
-                        <span><strong>Overall:</strong> ${s.score_overall}%</span>
+                        <span><strong>${t('score.tajweed')}:</strong> ${s.score_tajweed}%</span>
+                        <span><strong>${t('score.memorization')}:</strong> ${s.score_memorization}%</span>
+                        <span><strong>${t('score.fluency')}:</strong> ${s.score_fluency}%</span>
+                        <span><strong>${t('score.overall')}:</strong> ${s.score_overall}%</span>
                       </div>
                       ${s.score_comments ? `<p style="margin-top:6px;color:var(--text-light)"><i class="fas fa-comment"></i> ${s.score_comments}</p>` : ''}
                     </div>
@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   ${sessionStatusBadge(s.status)}
                   ${!isTeacher && !s.my_rating ? `<button class="btn btn-sm btn-primary" onclick="openReviewModal(${s.id})">${t('sessions.leave_review')}</button>` : ''}
                   ${!isTeacher && s.my_rating ? `<span>${starsHtml(s.my_rating)}</span>` : ''}
-                  ${isTeacher && hasScore ? `<span class="badge badge-green">Scored: ${s.score_overall}%</span>` : ''}
+                  ${isTeacher && hasScore ? `<span class="badge badge-green">${t('sessions.scored')} ${s.score_overall}%</span>` : ''}
                 </div>
               </div>`;
           });

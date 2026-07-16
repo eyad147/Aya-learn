@@ -11,7 +11,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
       <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
     </div>
     <nav class="sidebar-nav">
@@ -26,8 +26,8 @@
       <div class="user-info">
         <div class="user-avatar">A</div>
         <div class="user-details">
-          <span class="user-name">Admin</span>
-          <span class="user-role">Administrator</span>
+          <span class="user-name"></span>
+          <span class="user-role"></span>
         </div>
       </div>
       <a href="#" class="nav-item logout"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Log Out</span></a>
@@ -46,10 +46,10 @@
     <div class="user-dropdown-wrapper">
       <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">A</div>
       <div class="user-dropdown-menu" id="userDropdownMenu">
-        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
-        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> <span data-i18n="common.profile">Profile</span></a>
+        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> <span data-i18n="common.settings">Settings</span></a>
         <div class="dropdown-divider"></div>
-        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Log Out</span></button>
       </div>
     </div>
       </div>
@@ -155,16 +155,16 @@
       </div>
       <div class="content-grid">
         <div class="card">
-          <div class="card-header"><h3>Top Performing Students</h3></div>
+          <div class="card-header"><h3 data-i18n="common.top_students">Top Performing Students</h3></div>
           <div class="card-body">
             <table class="data-table">
-              <thead><tr><th>#</th><th data-i18n="users.table.user">Student</th><th data-i18n="dashboard.stats.avg_score">Avg Score</th><th data-i18n="dashboard.stats.scores_given">Scores Given</th></tr></thead>
+              <thead><tr><th data-i18n="common.ranking">#</th><th data-i18n="users.table.user">Student</th><th data-i18n="dashboard.stats.avg_score">Avg Score</th><th data-i18n="dashboard.stats.scores_given">Scores Given</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>Teacher Performance</h3></div>
+          <div class="card-header"><h3 data-i18n="common.teacher_performance">Teacher Performance</h3></div>
           <div class="card-body"><div class="teacher-stats"></div></div>
         </div>
       </div>
@@ -215,11 +215,11 @@
       <div class="modal-body">
         <form id="editClassForm">
           <input type="hidden" id="editClassId">
-          <div class="form-group"><label data-i18n="classes.table.name">Class Name</label><input type="text" id="editClassName" required></div>
-          <div class="form-group"><label data-i18n="classes.table.schedule">Schedule</label><input type="text" id="editClassSchedule"></div>
-          <div class="form-group"><label data-i18n="nav.sessions">Time</label><input type="text" id="editClassTime"></div>
-          <div class="form-group"><label>Max Students</label><input type="number" id="editClassMax" min="1" max="100"></div>
-          <button type="submit" class="btn btn-primary btn-block" data-i18n="common.save">Save Changes</button>
+          <div class="form-group"><label data-i18n="classes.name">Class Name</label><input type="text" id="editClassName" required></div>
+          <div class="form-group"><label data-i18n="classes.schedule">Schedule</label><input type="text" id="editClassSchedule"></div>
+          <div class="form-group"><label data-i18n="classes.time">Time</label><input type="text" id="editClassTime"></div>
+          <div class="form-group"><label data-i18n="booking.max_students">Max Students</label><input type="number" id="editClassMax" min="1" max="100"></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="classes.save_changes">Save Changes</button>
         </form>
       </div>
     </div>
@@ -229,15 +229,15 @@
   <div class="modal-overlay" id="addClassModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Add New Class</h3>
+        <h3 data-i18n="classes.add_new">Add New Class</h3>
         <button class="modal-close" onclick="document.getElementById('addClassModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="addClassForm">
-          <div class="form-group"><label data-i18n="classes.table.name">Class Name</label><input type="text" id="newClassName" required></div>
-          <div class="form-group"><label data-i18n="classes.table.schedule">Schedule</label><input type="text" id="newClassSchedule" placeholder="e.g., Sun, Tue, Thu"></div>
-          <div class="form-group"><label>Time</label><input type="text" id="newClassTime" placeholder="e.g., 10:00 AM"></div>
-          <button type="submit" class="btn btn-primary btn-block">Create Class</button>
+          <div class="form-group"><label data-i18n="classes.name">Class Name</label><input type="text" id="newClassName" data-i18n-placeholder="classes.placeholder_name" placeholder="e.g., Intro to Quran" required></div>
+          <div class="form-group"><label data-i18n="classes.schedule">Schedule</label><input type="text" id="newClassSchedule" data-i18n-placeholder="classes.placeholder_schedule" placeholder="e.g., Sun, Tue, Thu"></div>
+          <div class="form-group"><label data-i18n="classes.time">Time</label><input type="text" id="newClassTime" data-i18n-placeholder="classes.placeholder_time" placeholder="e.g., 10:00 AM"></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="classes.create">Create Class</button>
         </form>
       </div>
     </div>

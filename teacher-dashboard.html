@@ -11,7 +11,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> <span data-i18n="app.name">Aya Learn</span></a>
       <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
     </div>
     <nav class="sidebar-nav">
@@ -27,8 +27,8 @@
       <div class="user-info">
         <div class="user-avatar">T</div>
         <div class="user-details">
-          <span class="user-name">Teacher</span>
-          <span class="user-role">Teacher</span>
+          <span class="user-name"></span>
+          <span class="user-role"></span>
         </div>
       </div>
       <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
@@ -47,10 +47,10 @@
     <div class="user-dropdown-wrapper">
       <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">T</div>
       <div class="user-dropdown-menu" id="userDropdownMenu">
-        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
-        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
-        <div class="dropdown-divider"></div>
-        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+          <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> <span data-i18n="common.profile">Profile</span></a>
+          <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> <span data-i18n="common.settings">Settings</span></a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Log Out</span></button>
       </div>
     </div>
       </div>
@@ -103,7 +103,7 @@
         <div class="card-body">
           <table class="data-table" id="studentsTable">
             <thead>
-              <tr><th>Student</th><th>Class</th><th>Progress</th><th>Avg Score</th><th>Status</th></tr>
+              <tr><th data-i18n="score.table_student">Student</th><th data-i18n="score.table_class">Class</th><th data-i18n="score.table_progress">Progress</th><th data-i18n="score.table_avg">Avg Score</th><th data-i18n="score.table_status">Status</th></tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -150,10 +150,10 @@
             <div class="form-group">
               <label data-i18n="teacher.day">Day of Week</label>
               <select id="availDay" required>
-                <option value="0">Sunday</option><option value="1">Monday</option>
-                <option value="2">Tuesday</option><option value="3">Wednesday</option>
-                <option value="4">Thursday</option><option value="5">Friday</option>
-                <option value="6">Saturday</option>
+                <option value="0" data-i18n="avail.sunday">Sunday</option><option value="1" data-i18n="avail.monday">Monday</option>
+                <option value="2" data-i18n="avail.tuesday">Tuesday</option><option value="3" data-i18n="avail.wednesday">Wednesday</option>
+                <option value="4" data-i18n="avail.thursday">Thursday</option><option value="5" data-i18n="avail.friday">Friday</option>
+                <option value="6" data-i18n="avail.saturday">Saturday</option>
               </select>
             </div>
             <div class="form-group">
@@ -195,15 +195,15 @@
   <div class="modal-overlay" id="addClassModal">
     <div class="modal">
       <div class="modal-header">
-        <h3 data-i18n="classes.add">Add New Class</h3>
+        <h3 data-i18n="classes.add_new">Add New Class</h3>
         <button class="modal-close" onclick="document.getElementById('addClassModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="addClassForm">
-          <div class="form-group"><label>Class Name</label><input type="text" id="newClassName" placeholder="e.g., Juz Amma Review" required></div>
-          <div class="form-group"><label>Schedule</label><input type="text" id="newClassSchedule" placeholder="e.g., Sun, Tue, Thu"></div>
-          <div class="form-group"><label>Time</label><input type="text" id="newClassTime" placeholder="e.g., 10:00 AM"></div>
-          <button type="submit" class="btn btn-primary btn-block">Create Class</button>
+          <div class="form-group"><label data-i18n="classes.name">Class Name</label><input type="text" id="newClassName" data-i18n-placeholder="classes.placeholder_name" placeholder="e.g., Juz Amma Review" required></div>
+          <div class="form-group"><label data-i18n="classes.schedule">Schedule</label><input type="text" id="newClassSchedule" data-i18n-placeholder="classes.placeholder_schedule" placeholder="e.g., Sun, Tue, Thu"></div>
+          <div class="form-group"><label data-i18n="classes.time">Time</label><input type="text" id="newClassTime" data-i18n-placeholder="classes.placeholder_time" placeholder="e.g., 10:00 AM"></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="classes.create">Create Class</button>
         </form>
       </div>
     </div>
@@ -213,17 +213,17 @@
   <div class="modal-overlay" id="editClassModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Edit Class</h3>
+        <h3 data-i18n="classes.edit">Edit Class</h3>
         <button class="modal-close" onclick="document.getElementById('editClassModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="editClassForm">
           <input type="hidden" id="editClassId">
-          <div class="form-group"><label>Class Name</label><input type="text" id="editClassName" required></div>
-          <div class="form-group"><label>Schedule</label><input type="text" id="editClassSchedule"></div>
-          <div class="form-group"><label>Time</label><input type="text" id="editClassTime"></div>
-          <div class="form-group"><label>Max Students</label><input type="number" id="editClassMax" min="1" max="100"></div>
-          <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+          <div class="form-group"><label data-i18n="classes.name">Class Name</label><input type="text" id="editClassName" required></div>
+          <div class="form-group"><label data-i18n="classes.schedule">Schedule</label><input type="text" id="editClassSchedule"></div>
+          <div class="form-group"><label data-i18n="classes.time">Time</label><input type="text" id="editClassTime"></div>
+          <div class="form-group"><label data-i18n="booking.max_students">Max Students</label><input type="number" id="editClassMax" min="1" max="100"></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="classes.save_changes">Save Changes</button>
         </form>
       </div>
     </div>
@@ -233,13 +233,13 @@
   <div class="modal-overlay" id="enrollModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Enroll Student in <span id="enrollClassName"></span></h3>
+        <h3 data-i18n="booking.enroll_student">Enroll Student in <span id="enrollClassName"></span></h3>
         <button class="modal-close" onclick="document.getElementById('enrollModal').classList.remove('active')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="enrollForm">
-          <div class="form-group"><label>Select Student</label><select id="enrollStudentSelect" required></select></div>
-          <button type="submit" class="btn btn-primary btn-block">Enroll</button>
+          <div class="form-group"><label data-i18n="booking.select_student">Select Student</label><select id="enrollStudentSelect" required></select></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="booking.enroll">Enroll</button>
         </form>
       </div>
     </div>
