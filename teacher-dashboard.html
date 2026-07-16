@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="dashboard.teacher_title">Teacher Dashboard - Aya Learn</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-tab="overview" data-i18n="nav.overview"><i class="fas fa-home"></i> Overview</a>
+      <a href="sessions.html" class="nav-item" data-i18n="nav.sessions"><i class="fas fa-calendar"></i> My Sessions</a>
+      <a href="#" class="nav-item" data-tab="students" data-i18n="nav.students"><i class="fas fa-users"></i> My Students</a>
+      <a href="#" class="nav-item" data-tab="scores" data-i18n="nav.scores"><i class="fas fa-star"></i> Score Students</a>
+      <a href="#" class="nav-item" data-tab="classes" data-i18n="nav.classes"><i class="fas fa-chalkboard"></i> Classes</a>
+      <a href="#" class="nav-item" data-tab="profile" data-i18n="nav.profile"><i class="fas fa-id-card"></i> My Profile</a>
+      <a href="#" class="nav-item" data-tab="settings" data-i18n="nav.settings"><i class="fas fa-cog"></i> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">T</div>
+        <div class="user-details">
+          <span class="user-name">Teacher</span>
+          <span class="user-role">Teacher</span>
+        </div>
+      </div>
+      <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+      <h1 id="pageTitle" data-i18n="dashboard.teacher_title">Teacher Dashboard</h1>
+      <div class="topbar-actions">
+    <div class="notif-wrapper">
+      <button class="notif-btn" id="notifBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
+      <div class="notif-dropdown" id="notifDropdown"></div>
+    </div>
+    <div class="user-dropdown-wrapper">
+      <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">T</div>
+      <div class="user-dropdown-menu" id="userDropdownMenu">
+        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+      </div>
+    </div>
+      </div>
+    </header>
+
+    <!-- Tab: Overview -->
+    <section class="tab-content active" id="tab-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.total_students">Total Students</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-chalkboard"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.my_classes">My Classes</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow"><i class="fas fa-star"></i></div>
+          <div class="stat-info"><h3>0%</h3><p data-i18n="dashboard.stats.avg_score">Avg Score</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fas fa-chart-bar"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.scores_given">Scores Given</p></div>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div class="card">
+          <div class="card-header"><h3 data-i18n="dashboard.recent_activity">Recent Activity</h3></div>
+          <div class="card-body"><div class="activity-list"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3 data-i18n="classes.title">My Classes</h3></div>
+          <div class="card-body"><div class="upcoming-list"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Students -->
+    <section class="tab-content" id="tab-students">
+      <div class="card">
+        <div class="card-header">
+          <h3 data-i18n="nav.students">My Students</h3>
+          <div class="card-actions">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" data-i18n-placeholder="filter.search_students" placeholder="Search students..." id="studentSearch">
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="studentsTable">
+            <thead>
+              <tr><th>Student</th><th>Class</th><th>Progress</th><th>Avg Score</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Score Students -->
+    <section class="tab-content" id="tab-scores">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="scores.title">Score Student Recitation</h3></div>
+        <div class="card-body">
+          <form class="score-form" id="scoreForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="scores.select_student">Select Student</label>
+                <select id="scoreStudent" required><option value="" disabled selected data-i18n="scores.choose_student">Choose a student</option></select>
+              </div>
+              <div class="form-group">
+                <label data-i18n="scores.portion">Surah / Juz</label>
+                <input type="text" id="scorePortion" data-i18n-placeholder="scores.portion_placeholder" placeholder="e.g., Surah Al-Fatiha" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="scores.tajweed">Tajweed Score (out of 100)</label>
+                <input type="number" id="tajweedScore" min="0" max="100" placeholder="0-100" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="scores.memorization">Memorization Score (out of 100)</label>
+                <input type="number" id="memScore" min="0" max="100" placeholder="0-100" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="scores.fluency">Fluency Score (out of 100)</label>
+                <input type="number" id="fluencyScore" min="0" max="100" placeholder="0-100" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="scores.overall">Overall Score (auto-calculated)</label>
+              <input type="text" id="overallScore" readonly data-i18n-placeholder="scores.overall_calc" placeholder="Will be calculated">
+            </div>
+            <div class="form-group">
+              <label data-i18n="scores.comments">Comments</label>
+              <textarea id="scoreComments" rows="3" data-i18n-placeholder="scores.comments_placeholder" placeholder="Feedback for the student..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" data-i18n="scores.submit">Submit Score</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Classes -->
+    <section class="tab-content" id="tab-classes">
+      <div class="card">
+        <div class="card-header">
+          <h3 data-i18n="classes.title">My Classes</h3>
+          <button class="btn btn-primary btn-sm" id="addClassBtn" data-i18n="classes.add"><i class="fas fa-plus"></i> Add Class</button>
+        </div>
+        <div class="card-body">
+          <div class="classes-grid" id="teacherClassesGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Teacher Profile -->
+    <section class="tab-content" id="tab-profile">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="teacher.profile_title">My Teaching Profile</h3></div>
+        <div class="card-body">
+          <form class="settings-form" id="teacherProfileForm">
+            <div class="form-group"><label data-i18n="teacher.price">Price Per Session ($)</label><input type="number" id="tpPrice" min="0" step="0.01" data-i18n-placeholder="teacher.price_placeholder" placeholder="15.00"></div>
+            <div class="form-group"><label data-i18n="teacher.specializations">Specializations</label><input type="text" id="tpSpec" data-i18n-placeholder="teacher.spec_placeholder" placeholder="e.g., Tajweed, Hifz, Qiraat"></div>
+            <div class="form-group"><label data-i18n="teacher.experience">Years of Experience</label><input type="number" id="tpExp" min="0" data-i18n-placeholder="teacher.exp_placeholder" placeholder="5"></div>
+            <div class="form-group"><label data-i18n="teacher.languages">Languages</label><input type="text" id="tpLang" data-i18n-placeholder="teacher.lang_placeholder" placeholder="e.g., English, Arabic, Urdu"></div>
+            <div class="form-group"><label data-i18n="teacher.available">Available for Sessions</label><select id="tpAvail"><option value="1" data-i18n="teacher.yes">Yes</option><option value="0" data-i18n="teacher.no">No</option></select></div>
+          <button type="submit" class="btn btn-primary" data-i18n="teacher.save">Save Profile</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-header"><h3 data-i18n="teacher.availability">Weekly Availability Slots</h3></div>
+      <div class="card-body">
+        <form class="settings-form" id="availForm" style="margin-bottom:16px">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
+            <div class="form-group">
+              <label data-i18n="teacher.day">Day of Week</label>
+              <select id="availDay" required>
+                <option value="0">Sunday</option><option value="1">Monday</option>
+                <option value="2">Tuesday</option><option value="3">Wednesday</option>
+                <option value="4">Thursday</option><option value="5">Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="teacher.start_time">Start Time</label>
+              <input type="time" id="availStart" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="teacher.end_time">End Time</label>
+              <input type="time" id="availEnd" required>
+            </div>
+            <button type="submit" class="btn btn-primary" data-i18n="teacher.add_slot">Add Slot</button>
+          </div>
+        </form>
+        <div id="availSlotsList"></div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Tab: Settings -->
+    <section class="tab-content" id="tab-settings">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="settings.title">Profile Settings</h3></div>
+        <div class="card-body">
+          <form class="settings-form" id="settingsForm">
+            <div class="form-group"><label data-i18n="settings.name">Full Name</label><input type="text"></div>
+            <div class="form-group"><label data-i18n="settings.email">Email</label><input type="email" readonly></div>
+            <div class="form-group"><label data-i18n="settings.phone">Phone</label><input type="tel" data-i18n-placeholder="settings.phone_placeholder" placeholder="+1 234 567 890"></div>
+            <div class="form-group"><label data-i18n="settings.bio">Bio</label><textarea rows="3" data-i18n-placeholder="settings.bio_placeholder" placeholder="Tell students about yourself..."></textarea></div>
+            <button type="submit" class="btn btn-primary" data-i18n="settings.save">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Score Modal -->
+  <div class="modal-overlay" id="scoreModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="scores.title">Quick Score - <span id="modalStudentName"></span></h3>
+        <button class="modal-close" onclick="closeScoreModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="quickScoreForm">
+          <div class="form-group"><label data-i18n="scores.portion">Portion Recited</label><input type="text" data-i18n-placeholder="scores.portion_placeholder" placeholder="e.g., Surah Al-Fatiha" required></div>
+          <div class="form-group"><label data-i18n="scores.tajweed">Tajweed (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
+          <div class="form-group"><label data-i18n="scores.memorization">Memorization (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
+          <div class="form-group"><label data-i18n="scores.fluency">Fluency (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
+          <div class="form-group"><label data-i18n="scores.comments">Notes</label><textarea rows="2" data-i18n-placeholder="scores.comments_placeholder" placeholder="Quick feedback..."></textarea></div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="scores.submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Class Modal -->
+  <div class="modal-overlay" id="addClassModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="classes.add">Add New Class</h3>
+        <button class="modal-close" onclick="document.getElementById('addClassModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="addClassForm">
+          <div class="form-group"><label>Class Name</label><input type="text" id="newClassName" placeholder="e.g., Juz Amma Review" required></div>
+          <div class="form-group"><label>Schedule</label><input type="text" id="newClassSchedule" placeholder="e.g., Sun, Tue, Thu"></div>
+          <div class="form-group"><label>Time</label><input type="text" id="newClassTime" placeholder="e.g., 10:00 AM"></div>
+          <button type="submit" class="btn btn-primary btn-block">Create Class</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Class Modal -->
+  <div class="modal-overlay" id="editClassModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Edit Class</h3>
+        <button class="modal-close" onclick="document.getElementById('editClassModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="editClassForm">
+          <input type="hidden" id="editClassId">
+          <div class="form-group"><label>Class Name</label><input type="text" id="editClassName" required></div>
+          <div class="form-group"><label>Schedule</label><input type="text" id="editClassSchedule"></div>
+          <div class="form-group"><label>Time</label><input type="text" id="editClassTime"></div>
+          <div class="form-group"><label>Max Students</label><input type="number" id="editClassMax" min="1" max="100"></div>
+          <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enroll Modal -->
+  <div class="modal-overlay" id="enrollModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Enroll Student in <span id="enrollClassName"></span></h3>
+        <button class="modal-close" onclick="document.getElementById('enrollModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="enrollForm">
+          <div class="form-group"><label>Select Student</label><select id="enrollStudentSelect" required></select></div>
+          <button type="submit" class="btn btn-primary btn-block">Enroll</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>
