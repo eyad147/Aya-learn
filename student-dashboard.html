@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="student.overview">Student Dashboard - Aya Learn</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-tab="overview" data-i18n="nav.overview"><i class="fas fa-home"></i> Overview</a>
+      <a href="teachers.html" class="nav-item" data-i18n="nav.browse_teachers"><i class="fas fa-search"></i> Browse Teachers</a>
+      <a href="sessions.html" class="nav-item" data-i18n="nav.sessions"><i class="fas fa-calendar"></i> My Sessions</a>
+      <a href="#" class="nav-item" data-tab="progress"><i class="fas fa-chart-line"></i> My Progress</a>
+      <a href="#" class="nav-item" data-tab="scores" data-i18n="nav.scores"><i class="fas fa-star"></i> My Scores</a>
+      <a href="#" class="nav-item" data-tab="portions"><i class="fas fa-book"></i> Assigned Portions</a>
+      <a href="#" class="nav-item" data-tab="settings" data-i18n="nav.settings"><i class="fas fa-cog"></i> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">S</div>
+        <div class="user-details">
+          <span class="user-name">Student</span>
+          <span class="user-role">Student</span>
+        </div>
+      </div>
+      <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+      <h1 id="pageTitle" data-i18n="student.overview">Student Dashboard</h1>
+      <div class="topbar-actions">
+    <div class="notif-wrapper">
+      <button class="notif-btn" id="notifBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
+      <div class="notif-dropdown" id="notifDropdown"></div>
+    </div>
+    <div class="user-dropdown-wrapper">
+      <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">S</div>
+      <div class="user-dropdown-menu" id="userDropdownMenu">
+        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+      </div>
+    </div>
+      </div>
+    </header>
+
+    <!-- Tab: Overview -->
+    <section class="tab-content active" id="tab-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-book-open"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.juz_memorized">Juz Memorized</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-star"></i></div>
+          <div class="stat-info"><h3>0%</h3><p data-i18n="dashboard.stats.avg_score">Average Score</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow"><i class="fas fa-fire"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.active_days">Active Days</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fas fa-trophy"></i></div>
+          <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.total_scores">Total Scores</p></div>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div class="card">
+          <div class="card-header"><h3>Overall Progress</h3></div>
+          <div class="card-body">
+            <div class="progress-ring-container">
+              <div class="progress-ring">
+                <svg viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="54" class="ring-bg"/>
+                  <circle cx="60" cy="60" r="54" class="ring-fill" style="stroke-dashoffset: 339.292"/>
+                </svg>
+                <div class="ring-text">
+                  <span class="ring-percent">0%</span>
+                  <span class="ring-label">Complete</span>
+                </div>
+              </div>
+              <div class="progress-details">
+                <div class="progress-detail">
+                  <span class="detail-label">Juz Memorized</span>
+                  <span class="detail-value">0 / 30</span>
+                </div>
+                <div class="progress-detail">
+                  <span class="detail-label">In Progress</span>
+                  <span class="detail-value">None</span>
+                </div>
+                <div class="progress-detail">
+                  <span class="detail-label">Progress</span>
+                  <span class="detail-value">Click Juz to update</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Recent Scores</h3></div>
+          <div class="card-body"><div class="activity-list"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Progress -->
+    <section class="tab-content" id="tab-progress">
+      <div class="card">
+        <div class="card-header"><h3>Juz Progress</h3></div>
+        <div class="card-body">
+          <div class="juz-grid" id="juzGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Scores -->
+    <section class="tab-content" id="tab-scores">
+      <div class="card">
+        <div class="card-header">
+          <h3 data-i18n="student.scores">Score History</h3>
+          <div class="card-actions">
+            <select id="scoreFilter" class="filter-select">
+              <option value="all">All Scores</option>
+              <option value="tajweed">Tajweed</option>
+              <option value="memorization">Memorization</option>
+              <option value="fluency">Fluency</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="scoresTable">
+            <thead>
+              <tr><th>Date</th><th>Portion</th><th>Tajweed</th><th>Memorization</th><th>Fluency</th><th>Overall</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Assigned Portions -->
+    <section class="tab-content" id="tab-portions">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="student.portions">Assigned Portions</h3></div>
+        <div class="card-body"><div class="portions-list"></div></div>
+      </div>
+    </section>
+
+    <!-- Tab: Settings -->
+    <section class="tab-content" id="tab-settings">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="settings.title">Profile Settings</h3></div>
+        <div class="card-body">
+          <form class="settings-form" id="settingsForm">
+            <div class="form-group"><label data-i18n="settings.name">Full Name</label><input type="text"></div>
+            <div class="form-group"><label data-i18n="settings.email">Email</label><input type="email" readonly></div>
+            <div class="form-group"><label data-i18n="settings.phone">Phone</label><input type="tel" data-i18n-placeholder="settings.phone_placeholder" placeholder="+1 234 567 890"></div>
+            <button type="submit" class="btn btn-primary" data-i18n="settings.save">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>
