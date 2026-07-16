@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="app.name">Aya Learn - Quran Memorization Platform</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="landing-page">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-book-quran"></i>
+        <span data-i18n="app.name">Aya Learn</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home" data-i18n="nav.overview">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="container hero-content">
+      <h1 data-i18n="app.tagline">Memorize the <span class="highlight">Quran</span> with Guidance</h1>
+      <p data-i18n="app.tagline">Aya Learn connects teachers and students for structured Quran memorization. Track progress, score recitations, and grow together.</p>
+      <div class="hero-buttons">
+        <a href="signup.html" class="btn btn-primary btn-lg">Get Started</a>
+        <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Why Aya Learn?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <h3>For Teachers</h3>
+          <p>Create classes, assign portions, and score student recitations with detailed feedback.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-user-graduate"></i></div>
+          <h3>For Students</h3>
+          <p>Track your memorization progress, review portions, and monitor your scores over time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Progress Tracking</h3>
+          <p>Visual dashboards show memorization progress with charts and detailed statistics.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>Admin Control</h3>
+          <p>Full administrative panel to manage users, classes, and platform settings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container about-content">
+      <div class="about-text">
+        <h2 class="section-title">Our Mission</h2>
+        <p>Aya Learn aims to make Quran memorization accessible and organized. Whether you are a teacher managing multiple students or a student on your memorization journey, our platform provides the tools you need.</p>
+        <ul class="about-list">
+          <li><i class="fas fa-check"></i> Easy class management</li>
+          <li><i class="fas fa-check"></i> Detailed scoring system</li>
+          <li><i class="fas fa-check"></i> Progress visualization</li>
+          <li><i class="fas fa-check"></i> Role-based dashboards</li>
+        </ul>
+      </div>
+      <div class="about-visual">
+        <div class="visual-card">
+          <i class="fas fa-mosque"></i>
+          <p>Building a generation of Hafiz</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+        </div>
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+        <p>Quran Memorization Platform</p>
+      </div>
+      <div class="footer-links">
+        <a href="login.html">Log In</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Aya Learn. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
