@@ -351,20 +351,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const teachers = await api(url);
         teachersGrid.innerHTML = '';
         if (!teachers.length) { teachersGrid.innerHTML = '<p style="text-align:center;color:var(--text-lighter);padding:48px">'+t('teacher.no_teachers')+'</p>'; return; }
-        teachers.forEach(t => {
+        teachers.forEach(teacher => {
           teachersGrid.innerHTML += `
-            <div class="teacher-card" onclick="showTeacherProfile(${t.id})">
+            <div class="teacher-card" onclick="showTeacherProfile(${teacher.id})">
               <div class="teacher-card-header">
-                <div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem">${t.name[0]}</div>
+                <div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem">${teacher.name[0]}</div>
                 <div class="teacher-card-info">
-                  <h3>${t.name}</h3>
-                  <div class="teacher-rating">${starsHtml(Math.round(t.avg_rating))} <span>${t.avg_rating || t('teacher.new_label')}</span> <span style="color:var(--text-lighter)">(${t.review_count})</span></div>
+                  <h3>${teacher.name}</h3>
+                  <div class="teacher-rating">${starsHtml(Math.round(teacher.avg_rating))} <span>${teacher.avg_rating || t('teacher.new_label')}</span> <span style="color:var(--text-lighter)">(${teacher.review_count})</span></div>
                 </div>
               </div>
               <div class="teacher-card-body">
-                <p class="teacher-price">$${t.price_per_session} <span>${t('common.per_session')}</span></p>
-                <p class="teacher-specs">${t.specializations || t('teacher.general')}</p>
-                <p class="teacher-exp"><i class="fas fa-briefcase"></i> ${t('common.years_experience', t.years_experience || 0)}</p>
+                <p class="teacher-price">$${teacher.price_per_session} <span>${t('common.per_session')}</span></p>
+                <p class="teacher-specs">${teacher.specializations || t('teacher.general')}</p>
+                <p class="teacher-exp"><i class="fas fa-briefcase"></i> ${t('common.years_experience', teacher.years_experience || 0)}</p>
               </div>
               <div class="teacher-card-footer">
                 <span class="badge badge-green">${t('common.available')}</span>
@@ -383,10 +383,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!q) { loadTeachers(); return; }
       try {
         const teachers = await api('/teachers');
-        const filtered = teachers.filter(t => t.name.toLowerCase().includes(q) || (t.specializations||'').toLowerCase().includes(q));
+        const filtered = teachers.filter(teacher => teacher.name.toLowerCase().includes(q) || (teacher.specializations||'').toLowerCase().includes(q));
         teachersGrid.innerHTML = '';
-        filtered.forEach(t => {
-          teachersGrid.innerHTML += `<div class="teacher-card" onclick="showTeacherProfile(${t.id})"><div class="teacher-card-header"><div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem">${t.name[0]}</div><div class="teacher-card-info"><h3>${t.name}</h3><div class="teacher-rating">${starsHtml(Math.round(t.avg_rating))} <span>${t.avg_rating||t('teacher.new_label')}</span></div></div></div><div class="teacher-card-body"><p class="teacher-price">$${t.price_per_session} <span>${t('common.per_session')}</span></p><p class="teacher-specs">${t.specializations||t('teacher.general')}</p></div><div class="teacher-card-footer"><span class="badge badge-green">${t('common.available')}</span><button class="btn btn-sm btn-primary">${t('common.book_now')}</button></div></div>`;
+        filtered.forEach(teacher => {
+          teachersGrid.innerHTML += `<div class="teacher-card" onclick="showTeacherProfile(${teacher.id})"><div class="teacher-card-header"><div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem">${teacher.name[0]}</div><div class="teacher-card-info"><h3>${teacher.name}</h3><div class="teacher-rating">${starsHtml(Math.round(teacher.avg_rating))} <span>${teacher.avg_rating||t('teacher.new_label')}</span></div></div></div><div class="teacher-card-body"><p class="teacher-price">$${teacher.price_per_session} <span>${t('common.per_session')}</span></p><p class="teacher-specs">${teacher.specializations||t('teacher.general')}</p></div><div class="teacher-card-footer"><span class="badge badge-green">${t('common.available')}</span><button class="btn btn-sm btn-primary">${t('common.book_now')}</button></div></div>`;
         });
       } catch(e) {}
     });
@@ -395,8 +395,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // TEACHER PROFILE MODAL
   window.showTeacherProfile = async function(id) {
     try {
-      const [t, slots] = await Promise.all([api('/teachers/' + id), api('/availability/' + id)]);
-      document.getElementById('teacherModalName').textContent = t.name;
+      const [teacher, slots] = await Promise.all([api('/teachers/' + id), api('/availability/' + id)]);
+      document.getElementById('teacherModalName').textContent = teacher.name;
       const body = document.getElementById('teacherModalBody');
       const days = [t('avail.sunday'),t('avail.monday'),t('avail.tuesday'),t('avail.wednesday'),t('avail.thursday'),t('avail.friday'),t('avail.saturday')];
       const today = new Date();
@@ -404,18 +404,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       body.innerHTML = `
         <div class="teacher-profile">
           <div class="teacher-profile-header">
-            <div class="user-avatar" style="width:72px;height:72px;font-size:1.8rem">${t.name[0]}</div>
+            <div class="user-avatar" style="width:72px;height:72px;font-size:1.8rem">${teacher.name[0]}</div>
             <div>
-              <h2>${t.name}</h2>
-              <div class="teacher-rating" style="font-size:1.1rem">${starsHtml(Math.round(t.avg_rating))} ${t.avg_rating||t('teacher.new_label')} (${t.review_count} ${t('teacher.reviews')})</div>
-              <p style="color:var(--text-light)">${t.bio || t('teacher.quran_teacher')}</p>
+              <h2>${teacher.name}</h2>
+              <div class="teacher-rating" style="font-size:1.1rem">${starsHtml(Math.round(teacher.avg_rating))} ${teacher.avg_rating||t('teacher.new_label')} (${teacher.review_count} ${t('teacher.reviews')})</div>
+              <p style="color:var(--text-light)">${teacher.bio || t('teacher.quran_teacher')}</p>
             </div>
           </div>
           <div class="teacher-profile-details">
-            <div><strong>${t('teacher.price_label')}</strong> $${t.price_per_session}/${t('nav.sessions').toLowerCase()}</div>
-            <div><strong>${t('teacher.experience_label')}</strong> ${t('common.years_experience', t.years_experience||0)}</div>
-            <div><strong>${t('teacher.languages_label')}</strong> ${t.languages||t('teacher.english')}</div>
-            <div><strong>${t('teacher.specializations_label')}</strong> ${t.specializations||t('teacher.general')}</div>
+            <div><strong>${t('teacher.price_label')}</strong> $${teacher.price_per_session}/${t('nav.sessions').toLowerCase()}</div>
+            <div><strong>${t('teacher.experience_label')}</strong> ${t('common.years_experience', teacher.years_experience||0)}</div>
+            <div><strong>${t('teacher.languages_label')}</strong> ${teacher.languages||t('teacher.english')}</div>
+            <div><strong>${t('teacher.specializations_label')}</strong> ${teacher.specializations||t('teacher.general')}</div>
           </div>
           <h3 style="margin:20px 0 12px">${t('sessions.available_slots')}</h3>
           <div class="avail-slots" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
@@ -424,21 +424,21 @@ document.addEventListener('DOMContentLoaded', async () => {
               const daysUntil = (s.day_of_week - today.getDay() + 7) % 7 || 7;
               nextDate.setDate(today.getDate() + daysUntil);
               const dateStr = nextDate.toISOString().slice(0,10) + 'T' + s.start_time;
-              return `<button class="btn btn-sm btn-outline" onclick="quickBookSlot(${id},'${dateStr}','${t.name.replace(/'/g,"\\'")}',${t.price_per_session})" style="padding:8px 12px;text-align:left">
+              return `<button class="btn btn-sm btn-outline" onclick="quickBookSlot(${id},'${dateStr}','${teacher.name.replace(/'/g,"\\'")}',${teacher.price_per_session})" style="padding:8px 12px;text-align:left">
                 <strong>${days[s.day_of_week]}</strong><br><small>${s.start_time} - ${s.end_time}</small>
               </button>`;
             }).join('') : '<p style="color:var(--text-lighter)">'+t('sessions.no_slots')+'</p>'}
           </div>
           <h3 style="margin:20px 0 12px">${t('teacher.reviews')}</h3>
           <div class="reviews-list">
-            ${t.reviews?.length ? t.reviews.map(r => `
+            ${teacher.reviews?.length ? teacher.reviews.map(r => `
               <div class="review-item">
                 <div class="review-header"><strong>${r.student_name}</strong> ${starsHtml(r.rating)} <span style="color:var(--text-lighter)">${formatDate(r.created_at)}</span></div>
                 <p>${r.comment || t('common.no_comment')}</p>
               </div>
             `).join('') : '<p style="color:var(--text-lighter)">'+t('teacher.no_reviews')+'</p>'}
           </div>
-          <button class="btn btn-outline" style="margin-top:16px;width:100%" onclick="openBooking(${t.id},'${t.name.replace(/'/g,"\\'")}',${t.price_per_session})">${t('sessions.suggest_time')}</button>
+          <button class="btn btn-outline" style="margin-top:16px;width:100%" onclick="openBooking(${teacher.id},'${teacher.name.replace(/'/g,"\\'")}',${teacher.price_per_session})">${t('sessions.suggest_time')}</button>
         </div>`;
       showModal('teacherModal');
     } catch (e) { alert(e.message); }
