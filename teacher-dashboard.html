@@ -18,7 +18,7 @@
       <a href="#" class="nav-item active" data-tab="overview" data-i18n="nav.overview"><i class="fas fa-home"></i> Overview</a>
       <a href="sessions.html" class="nav-item" data-i18n="nav.sessions"><i class="fas fa-calendar"></i> My Sessions</a>
       <a href="#" class="nav-item" data-tab="students" data-i18n="nav.students"><i class="fas fa-users"></i> My Students</a>
-      <a href="#" class="nav-item" data-tab="scores" data-i18n="nav.scores"><i class="fas fa-star"></i> Score Students</a>
+
       <a href="#" class="nav-item" data-tab="classes" data-i18n="nav.classes"><i class="fas fa-chalkboard"></i> Classes</a>
       <a href="#" class="nav-item" data-tab="profile" data-i18n="nav.profile"><i class="fas fa-id-card"></i> My Profile</a>
       <a href="#" class="nav-item" data-tab="settings" data-i18n="nav.settings"><i class="fas fa-cog"></i> Settings</a>
@@ -103,7 +103,7 @@
         <div class="card-body">
           <table class="data-table" id="studentsTable">
             <thead>
-              <tr><th>Student</th><th>Class</th><th>Progress</th><th>Avg Score</th><th>Status</th><th>Actions</th></tr>
+              <tr><th>Student</th><th>Class</th><th>Progress</th><th>Avg Score</th><th>Status</th></tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -111,49 +111,7 @@
       </div>
     </section>
 
-    <!-- Tab: Score Students -->
-    <section class="tab-content" id="tab-scores">
-      <div class="card">
-        <div class="card-header"><h3 data-i18n="scores.title">Score Student Recitation</h3></div>
-        <div class="card-body">
-          <form class="score-form" id="scoreForm">
-            <div class="form-row">
-              <div class="form-group">
-                <label data-i18n="scores.select_student">Select Student</label>
-                <select id="scoreStudent" required><option value="" disabled selected data-i18n="scores.choose_student">Choose a student</option></select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="scores.portion">Surah / Juz</label>
-                <input type="text" id="scorePortion" data-i18n-placeholder="scores.portion_placeholder" placeholder="e.g., Surah Al-Fatiha" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label data-i18n="scores.tajweed">Tajweed Score (out of 100)</label>
-                <input type="number" id="tajweedScore" min="0" max="100" placeholder="0-100" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="scores.memorization">Memorization Score (out of 100)</label>
-                <input type="number" id="memScore" min="0" max="100" placeholder="0-100" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="scores.fluency">Fluency Score (out of 100)</label>
-                <input type="number" id="fluencyScore" min="0" max="100" placeholder="0-100" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label data-i18n="scores.overall">Overall Score (auto-calculated)</label>
-              <input type="text" id="overallScore" readonly data-i18n-placeholder="scores.overall_calc" placeholder="Will be calculated">
-            </div>
-            <div class="form-group">
-              <label data-i18n="scores.comments">Comments</label>
-              <textarea id="scoreComments" rows="3" data-i18n-placeholder="scores.comments_placeholder" placeholder="Feedback for the student..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" data-i18n="scores.submit">Submit Score</button>
-          </form>
-        </div>
-      </div>
-    </section>
+
 
     <!-- Tab: Classes -->
     <section class="tab-content" id="tab-classes">
@@ -231,25 +189,7 @@
     </section>
   </main>
 
-  <!-- Score Modal -->
-  <div class="modal-overlay" id="scoreModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 data-i18n="scores.title">Quick Score - <span id="modalStudentName"></span></h3>
-        <button class="modal-close" onclick="closeScoreModal()"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="quickScoreForm">
-          <div class="form-group"><label data-i18n="scores.portion">Portion Recited</label><input type="text" data-i18n-placeholder="scores.portion_placeholder" placeholder="e.g., Surah Al-Fatiha" required></div>
-          <div class="form-group"><label data-i18n="scores.tajweed">Tajweed (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
-          <div class="form-group"><label data-i18n="scores.memorization">Memorization (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
-          <div class="form-group"><label data-i18n="scores.fluency">Fluency (out of 100)</label><input type="number" min="0" max="100" placeholder="0-100" required></div>
-          <div class="form-group"><label data-i18n="scores.comments">Notes</label><textarea rows="2" data-i18n-placeholder="scores.comments_placeholder" placeholder="Quick feedback..."></textarea></div>
-          <button type="submit" class="btn btn-primary btn-block" data-i18n="scores.submit">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Add Class Modal -->
   <div class="modal-overlay" id="addClassModal">

@@ -17,10 +17,15 @@ router.get('/', authenticate, (req, res) => {
     if (req.user.role === 'student') {
       query = `
         SELECT s.*, u.name as teacher_name, tp.price_per_session,
-          (SELECT rating FROM reviews WHERE session_id = s.id) as my_rating
+          (SELECT rating FROM reviews WHERE session_id = s.id) as my_rating,
+          sc.id as score_id, sc.portion as score_portion,
+          sc.tajweed as score_tajweed, sc.memorization as score_memorization,
+          sc.fluency as score_fluency, sc.overall as score_overall,
+          sc.comments as score_comments
         FROM sessions s
         JOIN users u ON s.teacher_id = u.id
         LEFT JOIN teacher_profiles tp ON tp.user_id = u.id
+        LEFT JOIN scores sc ON sc.session_id = s.id
         WHERE s.student_id = ?
         ORDER BY s.scheduled_at DESC
       `;
@@ -28,9 +33,14 @@ router.get('/', authenticate, (req, res) => {
     } else if (req.user.role === 'teacher') {
       query = `
         SELECT s.*, u.name as student_name,
-          (SELECT rating FROM reviews WHERE session_id = s.id) as student_rating
+          (SELECT rating FROM reviews WHERE session_id = s.id) as student_rating,
+          sc.id as score_id, sc.portion as score_portion,
+          sc.tajweed as score_tajweed, sc.memorization as score_memorization,
+          sc.fluency as score_fluency, sc.overall as score_overall,
+          sc.comments as score_comments
         FROM sessions s
         JOIN users u ON s.student_id = u.id
+        LEFT JOIN scores sc ON sc.session_id = s.id
         WHERE s.teacher_id = ?
         ORDER BY s.scheduled_at DESC
       `;
@@ -176,17 +186,33 @@ router.put('/:id/complete', authenticate, authorize('teacher'), (req, res) => {
     if (!session) return res.status(404).json({ error: 'Session not found' });
     if (session.teacher_id !== req.user.id) return res.status(403).json({ error: 'Not your session' });
 
+    const { tajweed, memorization, fluency, portion, comments } = req.body;
+    let score = null;
+
+    if (portion && tajweed != null && memorization != null && fluency != null) {
+      const overall = Math.round((parseInt(tajweed) + parseInt(memorization) + parseInt(fluency)) / 3);
+      const result = db.prepare(`
+        INSERT INTO scores (student_id, teacher_id, portion, tajweed, memorization, fluency, overall, comments, session_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(session.student_id, req.user.id, portion, parseInt(tajweed), parseInt(memorization), parseInt(fluency), overall, comments || '', session.id);
+      score = db.prepare('SELECT * FROM scores WHERE id = ?').get(result.lastInsertRowid);
+    }
+
     db.prepare("UPDATE sessions SET status = 'completed', updated_at = CURRENT_TIMESTAMP WHERE id = ?").run(req.params.id);
+
+    const msg = score
+      ? `Your session score - ${score.portion}: Tajweed ${score.tajweed}, Memorization ${score.memorization}, Fluency ${score.fluency}, Overall ${score.overall}`
+      : 'Your session has been completed. Please leave a review!';
 
     createNotification(
       session.student_id,
       'session_completed',
       'Session Completed',
-      'Your session has been completed. Please leave a review!',
+      msg,
       '/sessions.html'
     );
 
-    res.json({ message: 'Session completed' });
+    res.json({ message: 'Session completed', score });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

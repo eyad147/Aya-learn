@@ -144,35 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   window.togglePassword = function(id, btn) { const i = document.getElementById(id); const ic = btn.querySelector('i'); if (i.type==='password') { i.type='text'; ic.classList.replace('fa-eye','fa-eye-slash'); } else { i.type='password'; ic.classList.replace('fa-eye-slash','fa-eye'); } };
 
-  // SCORE FORM AUTO CALC
-  const tI = document.getElementById('tajweedScore'), mI = document.getElementById('memScore'), fI = document.getElementById('fluencyScore'), oI = document.getElementById('overallScore');
-  function calcOverall() { if (!(tI&&mI&&fI&&oI)) return; const t=parseInt(tI.value)||0,m=parseInt(mI.value)||0,f=parseInt(fI.value)||0; oI.value=(t||m||f)?Math.round((t+m+f)/3)+'%':''; }
-  [tI,mI,fI].forEach(el => el?.addEventListener('input', calcOverall));
 
-  // SCORE FORM SUBMIT
-  const scoreForm = document.getElementById('scoreForm');
-  if (scoreForm) scoreForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const ss = document.getElementById('scoreStudent');
-    try { await api('/scores', { method:'POST', body: JSON.stringify({ student_id:ss.value, portion:document.getElementById('scorePortion').value, tajweed:parseInt(document.getElementById('tajweedScore').value), memorization:parseInt(document.getElementById('memScore').value), fluency:parseInt(document.getElementById('fluencyScore').value), comments:document.getElementById('scoreComments').value }) }); alert(t('scores.submitted_alert')); scoreForm.reset(); oI.value=''; loadTeacherStudents(); }
-    catch (err) { alert(t('common.error')+err.message); }
-  });
-
-  // QUICK SCORE MODAL
-  const scoreModal = document.getElementById('scoreModal');
-  const qsf = document.getElementById('quickScoreForm');
-  window.showScoreModal = function(name, sid) { document.getElementById('modalStudentName').textContent = name; scoreModal.dataset.studentId = sid; showModal('scoreModal'); };
-  window.closeScoreModal = function() { closeModalById('scoreModal'); };
-  scoreModal?.addEventListener('click', e => { if (e.target===scoreModal) closeScoreModal(); });
-  if (qsf) qsf.addEventListener('submit', async e => {
-    e.preventDefault(); const inp = qsf.querySelectorAll('input');
-    try { await api('/scores', { method:'POST', body: JSON.stringify({ student_id:scoreModal.dataset.studentId, portion:inp[0].value, tajweed:parseInt(inp[1].value), memorization:parseInt(inp[2].value), fluency:parseInt(inp[3].value), comments:qsf.querySelector('textarea').value }) }); alert(t('scores.submitted_alert')); qsf.reset(); closeScoreModal(); loadTeacherStudents(); }
-    catch (err) { alert(t('common.error')+err.message); }
-  });
-
-  // POPULATE SCORE STUDENT SELECT
-  const ssSel = document.getElementById('scoreStudent');
-  if (ssSel) { try { const u = await api('/users?role=student'); ssSel.innerHTML = '<option value="" disabled selected>'+t('scores.choose_student')+'</option>'; u.forEach(x => ssSel.innerHTML += `<option value="${x.id}">${x.name}</option>`); } catch(e){} }
 
   // ========================
   // TEACHER STUDENTS TABLE
@@ -189,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const avg = ss.length ? Math.round(ss.reduce((a,x) => a+x.overall,0)/ss.length) : 0;
         let cn = 'N/A'; for (const c of classes) { if (cd[c.id]?.students?.find(x => x.id===s.id)) { cn=c.name; break; } }
         const sb = avg>=85?'badge-green':avg>=60?'badge-yellow':'badge-red';
-        tbody.innerHTML += `<tr><td><div class="user-cell"><div class="user-avatar-sm">${s.name[0]}</div> ${s.name}</div></td><td>${cn}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${avg}%"></div></div><span>${avg}%</span></td><td>${avg}%</td><td><span class="badge ${sb}">${avg>=85?'Good':avg>=60?'Average':'Needs Work'}</span></td><td><button class="btn btn-sm btn-outline" onclick="showScoreModal('${s.name.replace(/'/g,"\\'")}',${s.id})">${t('scores.submit')}</button></td></tr>`;
+        tbody.innerHTML += `<tr><td><div class="user-cell"><div class="user-avatar-sm">${s.name[0]}</div> ${s.name}</div></td><td>${cn}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${avg}%"></div></div><span>${avg}%</span></td><td>${avg}%</td><td><span class="badge ${sb}">${avg>=85?'Good':avg>=60?'Average':'Needs Work'}</span></td></tr>`;
       });
     } catch(e) { console.error(e); }
   }
@@ -617,17 +589,31 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (!completed.length) { completedList.innerHTML = '<p style="text-align:center;color:var(--text-lighter);padding:32px">'+t('dashboard.no_completed')+'</p>'; }
           completed.forEach(s => {
             const isTeacher = user.role === 'teacher';
+            const hasScore = s.score_id;
             completedList.innerHTML += `
               <div class="session-card">
                 <div class="session-info">
                   <h4>${isTeacher ? s.student_name : s.teacher_name}</h4>
                   <p><i class="fas fa-calendar"></i> ${formatDateTime(s.scheduled_at)}</p>
                   ${s.meet_link ? `<p><a href="${s.meet_link}" target="_blank"><i class="fas fa-video"></i> Meeting link</a></p>` : ''}
+                  ${hasScore ? `
+                    <div class="score-display" style="margin-top:10px;padding:10px;background:var(--bg-secondary);border-radius:8px">
+                      <p><strong>${s.score_portion}</strong></p>
+                      <div style="display:flex;gap:16px;margin-top:6px;flex-wrap:wrap">
+                        <span><strong>Tajweed:</strong> ${s.score_tajweed}%</span>
+                        <span><strong>Memorization:</strong> ${s.score_memorization}%</span>
+                        <span><strong>Fluency:</strong> ${s.score_fluency}%</span>
+                        <span><strong>Overall:</strong> ${s.score_overall}%</span>
+                      </div>
+                      ${s.score_comments ? `<p style="margin-top:6px;color:var(--text-light)"><i class="fas fa-comment"></i> ${s.score_comments}</p>` : ''}
+                    </div>
+                  ` : ''}
                 </div>
                 <div class="session-actions">
                   ${sessionStatusBadge(s.status)}
                   ${!isTeacher && !s.my_rating ? `<button class="btn btn-sm btn-primary" onclick="openReviewModal(${s.id})">${t('sessions.leave_review')}</button>` : ''}
                   ${!isTeacher && s.my_rating ? `<span>${starsHtml(s.my_rating)}</span>` : ''}
+                  ${isTeacher && hasScore ? `<span class="badge badge-green">Scored: ${s.score_overall}%</span>` : ''}
                 </div>
               </div>`;
           });
@@ -638,7 +624,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     window.acceptSession = async function(id) { try { await api('/sessions/' + id + '/accept', { method: 'PUT' }); alert(t('sessions.accepted_alert')); loadSessions(); } catch(e) { alert(e.message); } };
     window.rejectSession = async function(id) { const r = prompt(t('sessions.reject_reason')); try { await api('/sessions/' + id + '/reject', { method: 'PUT', body: JSON.stringify({ reason: r || '' }) }); loadSessions(); } catch(e) { alert(t('common.error')+e.message); } };
-    window.completeSession = async function(id) { try { await api('/sessions/' + id + '/complete', { method: 'PUT' }); alert(t('sessions.completed_alert')); loadSessions(); } catch(e) { alert(e.message); } };
+    window.completeSession = function(id) {
+      document.getElementById('scoreSessionId').value = id;
+      document.getElementById('ssPortion').value = '';
+      document.getElementById('ssTajweed').value = '';
+      document.getElementById('ssMemorization').value = '';
+      document.getElementById('ssFluency').value = '';
+      document.getElementById('ssComments').value = '';
+      showModal('sessionScoreModal');
+    };
+    window.completeWithoutScore = async function() {
+      const id = document.getElementById('scoreSessionId').value;
+      closeModalById('sessionScoreModal');
+      try { await api('/sessions/' + id + '/complete', { method: 'PUT' }); alert(t('sessions.completed_alert')); loadSessions(); } catch(e) { alert(e.message); }
+    };
+    window.closeSessionScoreModal = function() { closeModalById('sessionScoreModal'); };
+    const ssForm = document.getElementById('sessionScoreForm');
+    if (ssForm) ssForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const id = document.getElementById('scoreSessionId').value;
+      const payload = {
+        portion: document.getElementById('ssPortion').value,
+        tajweed: parseInt(document.getElementById('ssTajweed').value),
+        memorization: parseInt(document.getElementById('ssMemorization').value),
+        fluency: parseInt(document.getElementById('ssFluency').value),
+        comments: document.getElementById('ssComments').value
+      };
+      try {
+        await api('/sessions/' + id + '/complete', { method: 'PUT', body: JSON.stringify(payload) });
+        alert(t('sessions.completed_alert'));
+        closeModalById('sessionScoreModal');
+        loadSessions();
+      } catch(e) { alert(e.message); }
+    });
     window.cancelSession = async function(id) { if(!confirm(t('common.confirm_cancel'))) return; try { await api('/sessions/' + id + '/cancel', { method: 'POST' }); loadSessions(); } catch(e) { alert(e.message); } };
 
     window.openMeetLinkModal = function(id) { document.getElementById('meetSessionId').value = id; showModal('meetLinkModal'); };

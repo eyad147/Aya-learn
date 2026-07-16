@@ -101,6 +101,47 @@
     </div>
   </div>
 
+  <!-- Score Modal (teacher completes session with score) -->
+  <div class="modal-overlay" id="sessionScoreModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="scores.title">Score Session</h3>
+        <button class="modal-close" onclick="closeSessionScoreModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="sessionScoreForm">
+          <input type="hidden" id="scoreSessionId">
+          <div class="form-group">
+            <label data-i18n="scores.portion">Surah / Portion</label>
+            <input type="text" id="ssPortion" data-i18n-placeholder="scores.portion_placeholder" placeholder="e.g., Surah Al-Fatiha" required>
+          </div>
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="form-group">
+              <label data-i18n="scores.tajweed">Tajweed (0-100)</label>
+              <input type="number" id="ssTajweed" min="0" max="100" placeholder="0-100" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="scores.memorization">Memorization (0-100)</label>
+              <input type="number" id="ssMemorization" min="0" max="100" placeholder="0-100" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="scores.fluency">Fluency (0-100)</label>
+              <input type="number" id="ssFluency" min="0" max="100" placeholder="0-100" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="scores.comments">Comments</label>
+            <textarea id="ssComments" rows="2" data-i18n-placeholder="scores.comments_placeholder" placeholder="Feedback for the student..."></textarea>
+          </div>
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="scores.submit">Complete & Submit Score</button>
+            <button type="button" class="btn btn-outline btn-block" onclick="completeWithoutScore()" data-i18n="sessions.complete_no_score">Complete Without Score</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Review Modal (student) -->
   <div class="modal-overlay" id="reviewModal">
     <div class="modal">

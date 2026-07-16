@@ -12,6 +12,7 @@ db.pragma('foreign_keys = ON');
 
 // Migrations for existing databases
 try { db.exec(`ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'active'`); } catch(e) {}
+try { db.exec(`ALTER TABLE scores ADD COLUMN session_id INTEGER REFERENCES sessions(id) ON DELETE SET NULL`); } catch(e) {}
 try { db.exec(`CREATE TABLE IF NOT EXISTS teacher_availability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INTEGER NOT NULL,
