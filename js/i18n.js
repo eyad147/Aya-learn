@@ -477,6 +477,9 @@ const translations = {
     'wallet.transaction_history': 'Transaction History',
     'wallet.no_transactions': 'No transactions yet',
     'wallet.insufficient': 'Insufficient balance. Please top up your wallet.',
+    'wallet.redirecting': 'Redirecting to payment page...',
+    'wallet.pending_webhook': 'Payment processing... Please wait.',
+    'wallet.payment_failed': 'Payment failed. Please try again.',
 
     'footer.description': 'Quran Memorization Platform',
     'footer.features': 'Features',
@@ -923,6 +926,9 @@ const translations = {
     'wallet.transaction_history': 'سجل المعاملات',
     'wallet.no_transactions': 'لا توجد معاملات بعد',
     'wallet.insufficient': 'رصيد غير كافٍ. يرجى شحن المحفظة.',
+    'wallet.redirecting': 'جاري التحويل إلى صفحة الدفع...',
+    'wallet.pending_webhook': 'جاري معالجة الدفع... يرجى الانتظار.',
+    'wallet.payment_failed': 'فشل الدفع. يرجى المحاولة مرة أخرى.',
   }
 };
 

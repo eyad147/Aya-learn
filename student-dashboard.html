@@ -195,6 +195,19 @@
   <script src="js/i18n.js"></script>
   <script src="js/app.js"></script>
   <script src="js/notifications.js"></script>
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'callback') {
+        const msg = document.createElement('div');
+        msg.style.cssText = 'position:fixed;top:20px;right:20px;background:#22c55e;color:#fff;padding:16px 24px;border-radius:8px;z-index:10000;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
+        msg.textContent = 'Payment received! Balance will update shortly.';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 5000);
+        history.replaceState(null, '', window.location.pathname);
+      }
+    })();
+  </script>
 
   <!-- Top-Up Modal -->
   <div class="modal" id="topupModal">

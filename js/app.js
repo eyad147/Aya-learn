@@ -696,6 +696,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   loadWalletBalance();
 
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('payment') === 'callback') {
+    setTimeout(loadWalletBalance, 1000);
+    history.replaceState(null, '', window.location.pathname);
+  }
+
   let selectedPaymentMethod = null;
 
   document.getElementById('topupBtn')?.addEventListener('click', () => {
@@ -757,30 +763,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     const amount = parseFloat(document.getElementById('topupAmount').value);
     if (!amount || amount <= 0) { alert(t('wallet.invalid_amount')); return; }
     if (!selectedPaymentMethod) { alert(t('wallet.select_method')); return; }
-    if ((selectedPaymentMethod === 'visa' || selectedPaymentMethod === 'mastercard')) {
-      const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
-      const expiry = document.getElementById('cardExpiry').value;
-      const cvv = document.getElementById('cardCvv').value;
-      const name = document.getElementById('cardName').value;
-      if (!cardNum || cardNum.length < 13) { alert(t('wallet.invalid_card')); return; }
-      if (!expiry || !expiry.includes('/')) { alert(t('wallet.invalid_expiry')); return; }
-      if (!cvv || cvv.length < 3) { alert(t('wallet.invalid_cvv')); return; }
-      if (!name) { alert(t('wallet.invalid_name')); return; }
-    }
     const btn = document.getElementById('confirmTopupBtn');
     btn.textContent = t('wallet.processing');
     btn.disabled = true;
     try {
-      const result = await api('/wallet/topup', {
+      const result = await api('/paymob/create-order', {
         method: 'POST',
         body: JSON.stringify({ amount, method: selectedPaymentMethod })
       });
-      document.getElementById('topupSuccess').style.display = 'block';
-      document.getElementById('topupSuccessMsg').textContent = t('wallet.success_msg') + ' $' + amount.toFixed(2);
-      document.getElementById('paymentMethodDetails').style.display = 'none';
-      document.getElementById('topupFooter').style.display = 'none';
-      const balEl = document.getElementById('walletBalance');
-      if (balEl) balEl.textContent = '$' + result.balance.toFixed(2);
+      if (result.checkout_url) {
+        document.getElementById('paymentMethodDetails').style.display = 'none';
+        document.getElementById('topupFooter').style.display = 'none';
+        document.getElementById('topupSuccess').style.display = 'block';
+        document.getElementById('topupSuccessMsg').textContent = t('wallet.redirecting');
+        const payWindow = window.open(result.checkout_url, 'paymob_checkout', 'width=600,height=700,scrollbars=yes');
+        const orderId = result.order_id;
+        const pollInterval = setInterval(async () => {
+          try {
+            if (payWindow && payWindow.closed) {
+              clearInterval(pollInterval);
+              const status = await api('/paymob/status/' + orderId);
+              if (status.status === 'completed') {
+                document.getElementById('topupSuccessMsg').textContent = t('wallet.success_msg') + ' $' + amount.toFixed(2);
+                const balEl = document.getElementById('walletBalance');
+                if (balEl) balEl.textContent = '$' + status.balance.toFixed(2);
+              } else if (status.status === 'failed') {
+                document.getElementById('topupSuccess').style.display = 'none';
+                document.getElementById('topupFooter').style.display = '';
+                alert(t('wallet.payment_failed'));
+                btn.textContent = t('wallet.pay_now');
+                btn.disabled = false;
+              } else {
+                document.getElementById('topupSuccessMsg').textContent = t('wallet.pending_webhook');
+                setTimeout(() => { loadWalletBalance(); }, 5000);
+              }
+            }
+          } catch (e) {}
+        }, 2000);
+        setTimeout(() => clearInterval(pollInterval), 120000);
+      }
     } catch (e) {
       alert(t('common.error') + ' ' + e.message);
       btn.textContent = t('wallet.pay_now');

@@ -16,11 +16,13 @@ const sessionRoutes = require('./server/routes/sessions');
 const notificationRoutes = require('./server/routes/notifications');
 const availabilityRoutes = require('./server/routes/availability');
 const walletRoutes = require('./server/routes/wallet');
+const paymobRoutes = require('./server/routes/paymob');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 
@@ -37,6 +39,7 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/wallet', walletRoutes);
+app.use('/api/paymob', paymobRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

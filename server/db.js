@@ -14,6 +14,9 @@ db.pragma('foreign_keys = ON');
 try { db.exec(`ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'active'`); } catch(e) {}
 try { db.exec(`ALTER TABLE scores ADD COLUMN session_id INTEGER REFERENCES sessions(id) ON DELETE SET NULL`); } catch(e) {}
 try { db.exec(`ALTER TABLE users ADD COLUMN balance REAL DEFAULT 0`); } catch(e) {}
+try { db.exec(`ALTER TABLE transactions ADD COLUMN paymob_order_id INTEGER DEFAULT 0`); } catch(e) {}
+try { db.exec(`ALTER TABLE transactions ADD COLUMN paymob_txn_id INTEGER DEFAULT 0`); } catch(e) {}
+try { db.exec(`UPDATE transactions SET status = 'completed' WHERE status = 'pending'`); } catch(e) {}
 try { db.exec(`CREATE TABLE IF NOT EXISTS teacher_availability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INTEGER NOT NULL,
