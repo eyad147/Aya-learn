@@ -13,6 +13,7 @@ db.pragma('foreign_keys = ON');
 // Migrations for existing databases
 try { db.exec(`ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'active'`); } catch(e) {}
 try { db.exec(`ALTER TABLE scores ADD COLUMN session_id INTEGER REFERENCES sessions(id) ON DELETE SET NULL`); } catch(e) {}
+try { db.exec(`ALTER TABLE users ADD COLUMN balance REAL DEFAULT 0`); } catch(e) {}
 try { db.exec(`CREATE TABLE IF NOT EXISTS teacher_availability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INTEGER NOT NULL,
@@ -166,6 +167,19 @@ db.exec(`
     is_available INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    amount REAL NOT NULL,
+    type TEXT NOT NULL CHECK(type IN ('topup', 'session_payment', 'refund')),
+    method TEXT DEFAULT '',
+    reference_number TEXT DEFAULT '',
+    status TEXT DEFAULT 'completed' CHECK(status IN ('completed', 'failed')),
+    description TEXT DEFAULT '',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
 `);
 

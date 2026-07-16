@@ -73,6 +73,11 @@ router.post('/', authenticate, authorize('student'), (req, res) => {
     const profile = db.prepare('SELECT * FROM teacher_profiles WHERE user_id = ?').get(teacher_id);
     const price = profile ? profile.price_per_session : 0;
 
+    const student = db.prepare('SELECT balance FROM users WHERE id = ?').get(req.user.id);
+    if (student.balance < price) {
+      return res.status(400).json({ error: 'Insufficient balance. Please top up your wallet.' });
+    }
+
     const conflict = db.prepare(`
       SELECT id FROM sessions
       WHERE teacher_id = ? AND scheduled_at = ? AND status IN ('pending','accepted','ongoing')
@@ -82,24 +87,33 @@ router.post('/', authenticate, authorize('student'), (req, res) => {
       return res.status(409).json({ error: 'Teacher is not available at this time' });
     }
 
+    const deduct = db.prepare('UPDATE users SET balance = balance - ? WHERE id = ?');
+    deduct.run(price, req.user.id);
+
+    db.prepare(`
+      INSERT INTO transactions (user_id, amount, type, method, reference_number, status, description)
+      VALUES (?, ?, 'session_payment', 'system', ?, 'completed', ?)
+    `).run(req.user.id, -price, 'SESSION-' + Date.now(), 'Payment for session');
+
     const result = db.prepare(`
       INSERT INTO sessions (student_id, teacher_id, scheduled_at, duration_minutes, price, student_notes, status)
-      VALUES (?, ?, ?, ?, ?, ?, 'pending')
+      VALUES (?, ?, ?, ?, ?, ?, 'accepted')
     `).run(req.user.id, teacher_id, scheduled_at, duration_minutes || 30, price, student_notes || '');
 
     const teacher = db.prepare('SELECT name FROM users WHERE id = ?').get(teacher_id);
-    const student = db.prepare('SELECT name FROM users WHERE id = ?').get(req.user.id);
+    const studentName = db.prepare('SELECT name FROM users WHERE id = ?').get(req.user.id);
 
     createNotification(
       teacher_id,
       'session_request',
       'New Session Request',
-      `${student.name} wants to book a session on ${new Date(scheduled_at).toLocaleString()}`,
+      `${studentName.name} wants to book a session on ${new Date(scheduled_at).toLocaleString()}`,
       '/sessions.html'
     );
 
     const session = db.prepare('SELECT * FROM sessions WHERE id = ?').get(result.lastInsertRowid);
-    res.status(201).json(session);
+    const updatedBalance = db.prepare('SELECT balance FROM users WHERE id = ?').get(req.user.id);
+    res.status(201).json({ ...session, balance: updatedBalance.balance });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -229,6 +243,14 @@ router.post('/:id/cancel', authenticate, (req, res) => {
 
     if (['completed', 'cancelled'].includes(session.status)) {
       return res.status(400).json({ error: 'Cannot cancel this session' });
+    }
+
+    if (session.status === 'accepted' && session.price > 0) {
+      db.prepare('UPDATE users SET balance = balance + ? WHERE id = ?').run(session.price, session.student_id);
+      db.prepare(`
+        INSERT INTO transactions (user_id, amount, type, method, reference_number, status, description)
+        VALUES (?, ?, 'refund', 'system', ?, 'completed', ?)
+      `).run(session.student_id, session.price, 'REFUND-' + session.id, 'Session cancelled - refund');
     }
 
     db.prepare("UPDATE sessions SET status = 'cancelled', updated_at = CURRENT_TIMESTAMP WHERE id = ?").run(req.params.id);

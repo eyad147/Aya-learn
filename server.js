@@ -15,6 +15,7 @@ const teacherRoutes = require('./server/routes/teachers');
 const sessionRoutes = require('./server/routes/sessions');
 const notificationRoutes = require('./server/routes/notifications');
 const availabilityRoutes = require('./server/routes/availability');
+const walletRoutes = require('./server/routes/wallet');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/teachers', teacherRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/availability', availabilityRoutes);
+app.use('/api/wallet', walletRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

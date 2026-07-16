@@ -680,4 +680,111 @@ document.addEventListener('DOMContentLoaded', async () => {
       try { await api('/sessions/' + id + '/review', { method: 'POST', body: JSON.stringify({ rating, comment: document.getElementById('reviewComment').value }) }); alert(t('review.submit')); rvForm.reset(); closeModalById('reviewModal'); loadSessions(); } catch(e) { alert(e.message); }
     });
   }
+
+  // ========================
+  // WALLET
+  // ========================
+  async function loadWalletBalance() {
+    const user = getUser();
+    if (!user || user.role !== 'student') return;
+    const balEl = document.getElementById('walletBalance');
+    if (!balEl) return;
+    try {
+      const data = await api('/wallet/balance');
+      balEl.textContent = '$' + (data.balance || 0).toFixed(2);
+    } catch (e) { console.error(e); }
+  }
+  loadWalletBalance();
+
+  let selectedPaymentMethod = null;
+
+  document.getElementById('topupBtn')?.addEventListener('click', () => {
+    selectedPaymentMethod = null;
+    document.getElementById('topupAmount').value = '';
+    document.getElementById('paymentMethodDetails').style.display = 'none';
+    document.getElementById('topupSuccess').style.display = 'none';
+    document.getElementById('confirmTopupBtn').disabled = true;
+    document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('topupFooter').style.display = '';
+    showModal('topupModal');
+  });
+
+  document.getElementById('transactionsBtn')?.addEventListener('click', async () => {
+    const list = document.getElementById('transactionsList');
+    list.innerHTML = '<p style="text-align:center;color:var(--text-lighter)">' + t('common.loading') + '</p>';
+    showModal('transactionsModal');
+    try {
+      const txns = await api('/wallet/transactions');
+      if (!txns.length) {
+        list.innerHTML = '<p style="text-align:center;color:var(--text-lighter);padding:32px">' + t('wallet.no_transactions') + '</p>';
+        return;
+      }
+      list.innerHTML = txns.map(tx => {
+        const isPositive = tx.amount > 0;
+        const icon = tx.type === 'topup' ? 'fa-plus-circle' : tx.type === 'refund' ? 'fa-undo' : 'fa-minus-circle';
+        const color = isPositive ? 'var(--green)' : 'var(--red, #ef4444)';
+        return `<div class="session-card" style="margin-bottom:8px">
+          <div class="session-info">
+            <h4 style="color:${color}"><i class="fas ${icon}"></i> ${isPositive ? '+' : ''}$${Math.abs(tx.amount).toFixed(2)}</h4>
+            <p>${tx.description}</p>
+            <p style="color:var(--text-lighter);font-size:0.85rem">${tx.method ? tx.method.replace('_', ' ').toUpperCase() : ''} ${tx.reference_number ? '- ' + tx.reference_number : ''}</p>
+          </div>
+          <div class="session-actions">
+            <span style="color:var(--text-lighter);font-size:0.85rem">${formatDateTime(tx.created_at)}</span>
+          </div>
+        </div>`;
+      }).join('');
+    } catch (e) { list.innerHTML = '<p style="color:red">' + e.message + '</p>'; }
+  });
+
+  window.selectPaymentMethod = function(method) {
+    selectedPaymentMethod = method;
+    document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-method="${method}"]`)?.classList.add('active');
+    document.getElementById('paymentMethodDetails').style.display = 'block';
+    document.getElementById('fawryDetails').style.display = method === 'fawry' ? 'block' : 'none';
+    document.getElementById('vodafoneDetails').style.display = method === 'vodafone_cash' ? 'block' : 'none';
+    document.getElementById('cardDetails').style.display = (method === 'visa' || method === 'mastercard') ? 'block' : 'none';
+    document.getElementById('confirmTopupBtn').disabled = false;
+    if (method === 'fawry') {
+      document.getElementById('fawryRef').textContent = 'FRW-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    } else if (method === 'vodafone_cash') {
+      document.getElementById('vodafoneRef').textContent = 'VFC-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+  };
+
+  window.confirmTopup = async function() {
+    const amount = parseFloat(document.getElementById('topupAmount').value);
+    if (!amount || amount <= 0) { alert(t('wallet.invalid_amount')); return; }
+    if (!selectedPaymentMethod) { alert(t('wallet.select_method')); return; }
+    if ((selectedPaymentMethod === 'visa' || selectedPaymentMethod === 'mastercard')) {
+      const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
+      const expiry = document.getElementById('cardExpiry').value;
+      const cvv = document.getElementById('cardCvv').value;
+      const name = document.getElementById('cardName').value;
+      if (!cardNum || cardNum.length < 13) { alert(t('wallet.invalid_card')); return; }
+      if (!expiry || !expiry.includes('/')) { alert(t('wallet.invalid_expiry')); return; }
+      if (!cvv || cvv.length < 3) { alert(t('wallet.invalid_cvv')); return; }
+      if (!name) { alert(t('wallet.invalid_name')); return; }
+    }
+    const btn = document.getElementById('confirmTopupBtn');
+    btn.textContent = t('wallet.processing');
+    btn.disabled = true;
+    try {
+      const result = await api('/wallet/topup', {
+        method: 'POST',
+        body: JSON.stringify({ amount, method: selectedPaymentMethod })
+      });
+      document.getElementById('topupSuccess').style.display = 'block';
+      document.getElementById('topupSuccessMsg').textContent = t('wallet.success_msg') + ' $' + amount.toFixed(2);
+      document.getElementById('paymentMethodDetails').style.display = 'none';
+      document.getElementById('topupFooter').style.display = 'none';
+      const balEl = document.getElementById('walletBalance');
+      if (balEl) balEl.textContent = '$' + result.balance.toFixed(2);
+    } catch (e) {
+      alert(t('common.error') + ' ' + e.message);
+      btn.textContent = t('wallet.pay_now');
+      btn.disabled = false;
+    }
+  };
 });

@@ -68,6 +68,34 @@ input, select, textarea, button { font-family: inherit; font-size: inherit; }
 .btn-icon { background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text-light); font-size: 1.1rem; }
 .btn-icon:hover { background: var(--border); }
 
+/* Payment method buttons */
+.payment-method-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.payment-method-btn:hover {
+  border-color: var(--primary);
+  background: var(--bg-secondary);
+}
+.payment-method-btn.active {
+  border-color: var(--primary);
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--primary);
+}
+.payment-method-btn i {
+  font-size: 1.2rem;
+}
+
 /* ========================
    BADGES
 ======================== */

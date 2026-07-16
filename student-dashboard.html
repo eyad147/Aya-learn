@@ -76,6 +76,24 @@
           <div class="stat-info"><h3>0</h3><p data-i18n="dashboard.stats.total_scores">Total Scores</p></div>
         </div>
       </div>
+
+      <div class="wallet-section" style="margin-bottom:24px">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fas fa-wallet"></i> <span data-i18n="wallet.title">Wallet</span></h3>
+            <div class="card-actions">
+              <button class="btn btn-sm btn-primary" id="topupBtn" data-i18n="wallet.topup">Top Up</button>
+              <button class="btn btn-sm btn-secondary" id="transactionsBtn" data-i18n="wallet.transactions">Transactions</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="font-size:2rem;font-weight:700;color:var(--primary)" id="walletBalance">$0.00</div>
+              <div style="color:var(--text-lighter)" data-i18n="wallet.balance_label">Available Balance</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="content-grid">
         <div class="card">
           <div class="card-header"><h3 data-i18n="student.overall_progress">Overall Progress</h3></div>
@@ -177,5 +195,105 @@
   <script src="js/i18n.js"></script>
   <script src="js/app.js"></script>
   <script src="js/notifications.js"></script>
+
+  <!-- Top-Up Modal -->
+  <div class="modal" id="topupModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="wallet.topup_title">Top Up Wallet</h2>
+        <button class="modal-close" onclick="closeModalById('topupModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label data-i18n="wallet.amount">Amount</label>
+          <input type="number" id="topupAmount" min="1" step="0.01" placeholder="10.00">
+        </div>
+        <div class="form-group">
+          <label data-i18n="wallet.select_method">Payment Method</label>
+          <div class="payment-methods" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+            <button type="button" class="payment-method-btn" data-method="fawry" onclick="selectPaymentMethod('fawry')">
+              <i class="fas fa-money-bill-wave"></i> Fawry
+            </button>
+            <button type="button" class="payment-method-btn" data-method="vodafone_cash" onclick="selectPaymentMethod('vodafone_cash')">
+              <i class="fas fa-mobile-alt"></i> Vodafone Cash
+            </button>
+            <button type="button" class="payment-method-btn" data-method="visa" onclick="selectPaymentMethod('visa')">
+              <i class="fas fa-credit-card"></i> Visa
+            </button>
+            <button type="button" class="payment-method-btn" data-method="mastercard" onclick="selectPaymentMethod('mastercard')">
+              <i class="fas fa-credit-card"></i> Mastercard
+            </button>
+          </div>
+        </div>
+
+        <div id="paymentMethodDetails" style="display:none;margin-top:16px">
+          <div id="fawryDetails" class="payment-details" style="display:none">
+            <div class="info-box" style="background:var(--bg-secondary);padding:16px;border-radius:8px;margin-bottom:12px">
+              <p style="margin-bottom:8px"><strong data-i18n="wallet.reference">Reference Number:</strong></p>
+              <p id="fawryRef" style="font-size:1.5rem;font-weight:700;color:var(--primary);letter-spacing:2px"></p>
+            </div>
+            <p style="color:var(--text-lighter);font-size:0.9rem" data-i18n="wallet.fawry_instructions">Visit any Fawry outlet or use the Fawry app. Enter the reference number above and pay the amount.</p>
+          </div>
+
+          <div id="vodafoneDetails" class="payment-details" style="display:none">
+            <div class="info-box" style="background:var(--bg-secondary);padding:16px;border-radius:8px;margin-bottom:12px">
+              <p style="margin-bottom:8px"><strong data-i18n="wallet.vodafone_number">Send to:</strong></p>
+              <p style="font-size:1.5rem;font-weight:700;color:var(--primary)">01012345678</p>
+              <p style="margin-top:8px"><strong data-i18n="wallet.reference">Reference:</strong> <span id="vodafoneRef" style="font-weight:700"></span></p>
+            </div>
+            <p style="color:var(--text-lighter);font-size:0.9rem" data-i18n="wallet.vodafone_instructions">Send the amount to the Vodafone Cash number above. Include the reference in the note.</p>
+          </div>
+
+          <div id="cardDetails" class="payment-details" style="display:none">
+            <div class="form-group">
+              <label data-i18n="wallet.card_number">Card Number</label>
+              <input type="text" id="cardNumber" maxlength="19" placeholder="4242 4242 4242 4242">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="form-group">
+                <label data-i18n="wallet.expiry">Expiry</label>
+                <input type="text" id="cardExpiry" maxlength="5" placeholder="12/25">
+              </div>
+              <div class="form-group">
+                <label data-i18n="wallet.cvv">CVV</label>
+                <input type="text" id="cardCvv" maxlength="3" placeholder="123">
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="wallet.cardholder_name">Cardholder Name</label>
+              <input type="text" id="cardName" placeholder="John Doe">
+            </div>
+            <p style="color:var(--text-lighter);font-size:0.8rem;margin-top:8px" data-i18n="wallet.test_hint">Test: Use 4242 4242 4242 4242 for Visa, 5555 5555 5555 4444 for Mastercard</p>
+          </div>
+        </div>
+
+        <div id="topupSuccess" style="display:none;text-align:center;padding:24px">
+          <i class="fas fa-check-circle" style="font-size:3rem;color:var(--green);margin-bottom:12px"></i>
+          <h3 data-i18n="wallet.success">Payment Successful!</h3>
+          <p id="topupSuccessMsg" style="color:var(--text-lighter)"></p>
+        </div>
+      </div>
+      <div class="modal-footer" id="topupFooter">
+        <button class="btn btn-secondary" onclick="closeModalById('topupModal')" data-i18n="common.cancel">Cancel</button>
+        <button class="btn btn-primary" id="confirmTopupBtn" onclick="confirmTopup()" disabled data-i18n="wallet.pay_now">Pay Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Modal -->
+  <div class="modal" id="transactionsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="wallet.transaction_history">Transaction History</h2>
+        <button class="modal-close" onclick="closeModalById('transactionsModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="transactionsList" style="max-height:400px;overflow-y:auto"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModalById('transactionsModal')" data-i18n="common.close">Close</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
