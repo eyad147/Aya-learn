@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="sessions.title">My Sessions - Aya Learn</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Aya Learn</a>
+      <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <!-- Populated by JS based on role -->
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">U</div>
+        <div class="user-details">
+          <span class="user-name">User</span>
+          <span class="user-role">Role</span>
+        </div>
+      </div>
+      <a href="#" class="nav-item logout" data-i18n="nav.logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+      <h1 data-i18n="sessions.title">My Sessions</h1>
+      <div class="topbar-actions">
+    <div class="notif-wrapper">
+      <button class="notif-btn" id="notifBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none">0</span></button>
+      <div class="notif-dropdown" id="notifDropdown"></div>
+    </div>
+    <div class="user-dropdown-wrapper">
+      <div class="user-avatar-sm user-dropdown-btn" id="userDropdownBtn">U</div>
+      <div class="user-dropdown-menu" id="userDropdownMenu">
+        <a href="#" class="dropdown-item" id="dropdownProfile"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="dropdown-item" id="dropdownSettings"><i class="fas fa-cog"></i> Settings</a>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item danger" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+      </div>
+    </div>
+      </div>
+    </header>
+
+    <!-- Tab: Pending (teacher sees requests, student sees awaiting) -->
+    <section class="tab-content active" id="tab-pending">
+      <div class="card">
+        <div class="card-header"><h3 id="pendingTitle" data-i18n="nav.pending">Pending Sessions</h3></div>
+        <div class="card-body">
+          <div class="sessions-list" id="pendingList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Upcoming -->
+    <section class="tab-content" id="tab-upcoming">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="nav.upcoming">Upcoming Sessions</h3></div>
+        <div class="card-body">
+          <div class="sessions-list" id="upcomingList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Completed -->
+    <section class="tab-content" id="tab-completed">
+      <div class="card">
+        <div class="card-header"><h3 data-i18n="nav.completed">Completed Sessions</h3></div>
+        <div class="card-body">
+          <div class="sessions-list" id="completedList"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add Meet Link Modal (teacher) -->
+  <div class="modal-overlay" id="meetLinkModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Google Meet Link</h3>
+        <button class="modal-close" onclick="document.getElementById('meetLinkModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="meetLinkForm">
+          <input type="hidden" id="meetSessionId">
+          <div class="form-group">
+            <label>Google Meet Link</label>
+            <input type="url" id="meetLinkInput" placeholder="https://meet.google.com/xxx-xxxx-xxx" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Share Link & Start Session</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Modal (student) -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Leave a Review</h3>
+        <button class="modal-close" onclick="document.getElementById('reviewModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="reviewForm">
+          <input type="hidden" id="reviewSessionId">
+          <div class="form-group">
+            <label>Rating</label>
+            <div class="star-rating" id="starRating">
+              <i class="fas fa-star" data-star="1"></i>
+              <i class="fas fa-star" data-star="2"></i>
+              <i class="fas fa-star" data-star="3"></i>
+              <i class="fas fa-star" data-star="4"></i>
+              <i class="fas fa-star" data-star="5"></i>
+            </div>
+            <input type="hidden" id="reviewRating" value="0">
+          </div>
+          <div class="form-group">
+            <label>Comment (optional)</label>
+            <textarea id="reviewComment" rows="3" placeholder="How was your session?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>
